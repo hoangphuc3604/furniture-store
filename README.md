@@ -14,7 +14,6 @@ The furniture store is an online shop specializing in selling furniture. It prov
 - Java 17
 - Spring boot 3.3.4
 - MS SQL Server 2022
-- Sonarcloud for check clean code
 
 ## Feature
 ~~

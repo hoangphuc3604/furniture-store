@@ -13,7 +13,7 @@ The furniture store is an online shop specializing in selling furniture. It prov
 ## Technologies
 - Java 17
 - Spring boot 3.3.4
-- MS SQL Server 2022
+- MySQL
 
 ## Feature
 ~~

@@ -12,6 +12,7 @@ public class User {
     private Long id;
     private String userName;
     private String email;
+
     public void setId(Long id) {
         this.id = id;
     }

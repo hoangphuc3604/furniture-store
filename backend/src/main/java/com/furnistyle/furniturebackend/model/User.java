@@ -1,40 +1,58 @@
 package com.furnistyle.furniturebackend.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Check;
 
 @Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
-    private String userName;
+
+    @Column(nullable = false, unique = true, length = 100)
+    private String username;
+
+    @Column(nullable = false, length = 100)
+    private String password;
+
+    @Column(nullable = false)
+    private String address;
+
+    @Column(nullable = false, length = 100)
+    private String fullname;
+
+    @Column(nullable = false, unique = true, length = 10)
+    private String phone;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    private LocalDate dateOfBirth;
 
-    public Long getId() {
-        return id;
-    }
+    @Column(nullable = false, length = 6)
+    @Check(constraints = "gender IN ('MALE', 'FEMALE')")
+    private String gender;
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    @Column(nullable = false)
+    private String role;
 }

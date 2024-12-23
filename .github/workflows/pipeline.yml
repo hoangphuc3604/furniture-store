@@ -1,0 +1,82 @@
+name: furniture-store
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  style:
+    runs-on: ubuntu-latest
+    name: Check style
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Run maven checkstyle
+        run: mvn checkstyle:checkstyle
+        working-directory: ./backend  # Chỉ chạy checkstyle trong thư mục backend
+
+  compile:
+    runs-on: ubuntu-latest
+    name: Compile project
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Compile project
+        run: mvn clean compile
+        working-directory: ./backend  # Chỉ biên dịch trong thư mục backend
+
+  build:
+    runs-on: ubuntu-latest
+    name: Build project
+    needs: [compile]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Building project
+        run: mvn package
+        working-directory: ./backend  # Chỉ xây dựng dự án trong thư mục backend
+
+  sonarqube:
+    runs-on: ubuntu-latest
+    name: SonarQube Analysis
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: SonarQube Scanner
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          mvn clean verify sonar:sonar \
+            -Dsonar.projectKey=FurnitureStore \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        working-directory: ./backend  # Chạy SonarQube chỉ trong thư mục backend

@@ -45,7 +45,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "date_of_birth")
     @Temporal(TemporalType.DATE)
     private LocalDate dateOfBirth;
 

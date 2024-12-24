@@ -1,0 +1,53 @@
+services:
+  mysql:
+    container_name: mysql-bsn
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${PASSWORD_DB}
+      MYSQL_DATABASE: ${NAME_DB}
+    volumes:
+      - mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - spring-demo
+    restart: unless-stopped
+
+  bsn-api:
+    container_name: bsn-api
+    image: alibouali/bsn-api:1.0.11
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: ${NAME_DB}
+      DB_USER: ${USERNAME_DB}
+      DB_PASSWORD: ${PASSWORD_DB}
+    ports:
+      - 8088:8088
+    volumes:
+      - bsn-api-storage:/app/uploads
+    networks:
+      - spring-demo
+    depends_on:
+      - mysql
+    command: ["wait-for-it", "mysql:3306", "--", "npm", "start"]
+
+  bsn-ui:
+    container_name: bsn-ui
+    image: furniture/bsn-ui:1.0.5
+    ports:
+      - 8080:80
+    networks:
+      - spring-demo
+    depends_on:
+      - bsn-api
+
+networks:
+  spring-demo:
+    driver: bridge
+
+volumes:
+  mysql:
+    driver: local
+  bsn-api-storage:
+    driver: local

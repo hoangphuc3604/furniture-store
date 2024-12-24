@@ -53,7 +53,7 @@ jobs:
       - name: Building project
         run: mvn package
         working-directory: ./backend
-  build:
+  build-and-analyze:
     name: Build and analyze
     runs-on: ubuntu-latest
     steps:

@@ -1,4 +1,4 @@
-package com.furnistyle.furniturebackend.model;
+package com.furnistyle.furniturebackend.models;
 
 public class OrderStatus {
     public static final String PENDING = "pending";

@@ -1,4 +1,4 @@
-package com.furnistyle.furniturebackend.model;
+package com.furnistyle.furniturebackend.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,16 +18,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "order_details")
-public class OrderDetail {
+@Table(name = "cart_details")
+public class CartDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "details_id")
+    @Column(name = "detail_id")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+    @JoinColumn(name = "cart_id", nullable = false)
+    private Cart cart;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
@@ -35,7 +35,4 @@ public class OrderDetail {
 
     @Column(nullable = false)
     private Integer amount;
-
-    @Column(nullable = false)
-    private Double price;
 }

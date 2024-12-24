@@ -1,4 +1,4 @@
-package com.furnistyle.furniturebackend.model;
+package com.furnistyle.furniturebackend.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -10,12 +10,12 @@ services:
     ports:
       - 3306:3306
     networks:
-      - spring-demo
+      - furniture-store
     restart: unless-stopped
 
   bsn-api:
     container_name: bsn-api
-    image: alibouali/bsn-api:1.0.11
+    image: furniture-store/bsn-api:1.0.11
     environment:
       DB_HOST: mysql
       DB_PORT: 3306
@@ -27,7 +27,7 @@ services:
     volumes:
       - bsn-api-storage:/app/uploads
     networks:
-      - spring-demo
+      - furniture-store
     depends_on:
       - mysql
     command: ["wait-for-it", "mysql:3306", "--", "npm", "start"]
@@ -38,7 +38,7 @@ services:
     ports:
       - 8080:80
     networks:
-      - spring-demo
+      - furniture-store
     depends_on:
       - bsn-api
 

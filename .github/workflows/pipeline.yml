@@ -18,41 +18,62 @@ jobs:
       - name: Run maven checkstyle
         run: mvn checkstyle:checkstyle
         working-directory: ./backend
-
   compile:
     runs-on: ubuntu-latest
     name: Compile project
-    container:
-      image: maven:3.8.6-jdk-17
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
 
       - name: Compile project
         run: mvn clean compile
         working-directory: ./backend
 
-      - name: Cache Maven build artifacts
-        uses: actions/cache@v4
-        with:
-          path: ./backend/target
-          key: ${{ runner.os }}-maven-target-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-target
+  # unit-tests:
+  #   runs-on: ubuntu-latest
+  #   name: Unit tests
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+
+  #     - name: Set up JDK 17
+  #       uses: actions/setup-java@v3
+  #       with:
+  #         java-version: '17'
+  #         distribution: 'temurin'
+  #         cache: maven
+
+  #     - name: Running unit tests
+  #       run: mvn test jacoco:report
+  #       working-directory: ./backend
 
   build:
     runs-on: ubuntu-latest
     name: Build project
-    needs: [style, compile]
-    container:
-      image: maven:3.8.6-jdk-17
+    needs: [compile]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
 
       - name: Building project
         run: mvn package
@@ -66,30 +87,27 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: 17
           distribution: 'temurin'
-
       - name: Cache SonarQube packages
         uses: actions/cache@v3
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-
       - name: Cache Maven packages
         uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=QuyDang1108_FurnitureStore
         working-directory: ./backend
+  

@@ -79,10 +79,10 @@ jobs:
         run: mvn package
         working-directory: ./backend
 
-  build-and-analyze:
+  analyze:
     runs-on: ubuntu-latest
     name: Build and analyze
-    needs: [build]
+    needs: [style, compile, unit-tests]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -111,3 +111,31 @@ jobs:
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=QuyDang1108_FurnitureStore
         working-directory: ./backend
   
+  build-docker:
+    runs-on: ubuntu-latest
+    name: Build and push Docker image
+    needs: [build, analyze]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build project
+        run: mvn package
+        working-directory: ./backend
+      - name: Build & push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+          image: dangquy1108/furniture-store
+          tags: latest
+          registry: docker.io
+          dockerfile: Dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+        working-directory: ./backend

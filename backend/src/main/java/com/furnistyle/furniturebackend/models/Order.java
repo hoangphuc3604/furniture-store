@@ -33,7 +33,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "confirm_admin", nullable = false)
-    private User confirmAdmin;
+    private User confirmedAdmin;
 
     @Column(nullable = false)
     private String status;

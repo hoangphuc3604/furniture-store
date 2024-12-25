@@ -29,6 +29,6 @@ public class Media {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Column(name = "link_image", nullable = false, columnDefinition = "TEXT")
-    private String linkImage;
+    @Column(name = "image_link", nullable = false, columnDefinition = "TEXT")
+    private String imageLink;
 }

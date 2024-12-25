@@ -52,4 +52,3 @@ public class AuthController {
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("Deploy successfully!");
     }
-}

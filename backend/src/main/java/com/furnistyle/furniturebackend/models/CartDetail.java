@@ -26,8 +26,8 @@ public class CartDetail {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "cart_id", nullable = false)
-    private Cart cart;
+    @JoinColumn(name = "customer_id", nullable = false)
+    private User customerId;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)

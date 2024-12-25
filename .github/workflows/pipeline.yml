@@ -110,5 +110,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=QuyDang1108_FurnitureStore
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar 
+          -Dsonar.projectKey=QuyDang1108_FurnitureStore 
+          -Dsonar.coverage.exclusions=**/test/**,**/*Test.java \
+          -Dsonar.exclusions=**/test/**,**/*Test.java
         working-directory: ./backend

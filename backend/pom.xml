@@ -198,14 +198,14 @@
                 </executions>
                 <configuration>
                     <excludes>
-                        <exclude>**/models/**</exclude>
-                        <exclude>**/dtos/**</exclude>
-                        <exclude>**/utils/**</exclude>
-                        <exclude>**/constraints/**</exclude>
-                        <exclude>**/controllers/**</exclude>
-                        <exclude>**/mappers/**</exclude>
-                        <exclude>**/repositories/**</exclude>
-                        <exclude>**/exceptions/**</exclude>
+<!--                        <exclude>**/models/**</exclude>-->
+<!--                        <exclude>**/dtos/**</exclude>-->
+<!--                        <exclude>**/utils/**</exclude>-->
+<!--                        <exclude>**/constraints/**</exclude>-->
+<!--                        <exclude>**/controllers/**</exclude>-->
+<!--                        <exclude>**/mappers/**</exclude>-->
+<!--                        <exclude>**/repositories/**</exclude>-->
+<!--                        <exclude>**/exceptions/**</exclude>-->
                     </excludes>
                     <rules>
                         <rule>

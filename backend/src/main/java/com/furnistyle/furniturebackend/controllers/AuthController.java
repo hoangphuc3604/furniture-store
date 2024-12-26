@@ -58,7 +58,7 @@ public class AuthController {
     }
 
     @PostMapping("/getUser")
-    public ResponseEntity<Optional<User>> getUser(Map<String, String> username) {
+    public ResponseEntity<Optional<User>> getUser(@RequestBody Map<String, String> username) {
         return ResponseEntity.ok(userRepository.findByUsername(username.get("username")));
     }
 }

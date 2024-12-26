@@ -1,13 +1,18 @@
 package com.furnistyle.furniturebackend.models;
 
+import com.furnistyle.furniturebackend.enums.EOrderStatus;
+import com.furnistyle.furniturebackend.exceptions.ErrorConstraintFieldException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -32,11 +37,11 @@ public class Order {
     private User createdCustomer;
 
     @ManyToOne
-    @JoinColumn(name = "confirm_admin", nullable = false)
+    @JoinColumn(name = "confirm_admin")
     private User confirmedAdmin;
 
-    @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private EOrderStatus status;
 
     @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate;
@@ -44,9 +49,20 @@ public class Order {
     @PrePersist
     protected void onCreate() {
         createdDate = LocalDateTime.now();
+
+        if (createdCustomer == confirmedAdmin) {
+            throw new ErrorConstraintFieldException("nhân viên xác nhận không được xác nhận đơn hàng của mình!");
+        }
     }
 
-    @Column(nullable = false, length = 255)
+    @PreUpdate
+    protected void checkUpdate() {
+        if (createdCustomer == confirmedAdmin) {
+            throw new ErrorConstraintFieldException("nhân viên xác nhận không được xác nhận đơn hàng của mình!");
+        }
+    }
+
+    @Column(nullable = false)
     private String address;
 
     @Column(name = "total_amount", nullable = false)

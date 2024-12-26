@@ -3,10 +3,14 @@ package com.furnistyle.furniturebackend.controllers;
 import com.furnistyle.furniturebackend.dtos.requests.AuthenticationRequest;
 import com.furnistyle.furniturebackend.dtos.requests.RegisterRequest;
 import com.furnistyle.furniturebackend.dtos.responses.AuthenticationResponse;
+import com.furnistyle.furniturebackend.models.User;
+import com.furnistyle.furniturebackend.repositories.UserRepository;
 import com.furnistyle.furniturebackend.services.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,14 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-
-    private final AuthService service;
+    private final UserRepository userRepository;
+    private final AuthService authService;
 
     @PostMapping("/register")
     public ResponseEntity<String> register(
         @RequestBody RegisterRequest request
     ) {
-        if (service.register(request)) {
+        if (authService.register(request)) {
             return ResponseEntity.ok().body("Register successfully!");
         } else {
             return ResponseEntity.badRequest().body("Register failed!");
@@ -37,7 +41,7 @@ public class AuthController {
     public ResponseEntity<AuthenticationResponse> login(
         @RequestBody AuthenticationRequest request
     ) {
-        return ResponseEntity.ok(service.authenticate(request));
+        return ResponseEntity.ok(authService.authenticate(request));
     }
 
     @PostMapping("/refresh-token")
@@ -45,11 +49,16 @@ public class AuthController {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
-        service.refreshToken(request, response);
+        authService.refreshToken(request, response);
     }
 
     @GetMapping("/test")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("Deploy successfully!");
+    }
+
+    @PostMapping("/getUser")
+    public ResponseEntity<Optional<User>> getUser(Map<String, String> username) {
+        return ResponseEntity.ok(userRepository.findByUsername(username.get("username")));
     }
 }

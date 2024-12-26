@@ -1,7 +1,11 @@
 package com.furnistyle.furniturebackend.models;
 
+import com.furnistyle.furniturebackend.enums.EAccountStatus;
+import com.furnistyle.furniturebackend.enums.ERole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,7 +35,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false, unique = true, length = 100)
     private String username;
@@ -59,13 +63,22 @@ public class User implements UserDetails {
     @Check(constraints = "gender IN ('MALE', 'FEMALE')")
     private String gender;
 
-    @Column(nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private ERole role;
+    private EAccountStatus status;
 
-    private boolean status;
+    @OneToMany(mappedBy = "owner")
+    private List<CartDetail> cartDetails;
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
+
+    @OneToMany(mappedBy = "createdCustomer")
+    private List<Order> orders;
+
+    @OneToMany(mappedBy = "confirmedAdmin")
+    private List<Order> confirmOrders;
+
 
     @Override
     public String getUsername() {
@@ -74,7 +87,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.trim()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
     }
 
     @Override

@@ -1,12 +1,12 @@
 package com.furnistyle.furniturebackend.models;
 
+import com.furnistyle.furniturebackend.models.embeddedid.OrderDetailId;
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,16 +20,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "order_details")
 public class OrderDetail {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "details_id")
-    private Long id;
+    @EmbeddedId
+    private OrderDetailId orderDetailId;
 
     @ManyToOne
+    @MapsId("orderId")
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
     @ManyToOne
+    @MapsId("productId")
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 

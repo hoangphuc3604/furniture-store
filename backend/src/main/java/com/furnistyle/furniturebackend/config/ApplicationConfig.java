@@ -2,6 +2,7 @@ package com.furnistyle.furniturebackend.config;
 
 
 import com.furnistyle.furniturebackend.auditing.ApplicationAuditAware;
+import com.furnistyle.furniturebackend.enums.ERole;
 import com.furnistyle.furniturebackend.models.User;
 import com.furnistyle.furniturebackend.repositories.UserRepository;
 import java.time.LocalDate;
@@ -70,13 +71,13 @@ public class ApplicationConfig {
                     .dateOfBirth(dateOfBirth)
                     .gender(gender)
                     .password(passwordEncoder().encode(password))
-                    .role("SUPER_ADMIN")
+                    .role(ERole.SUPER_ADMIN)
                     .build();
                 userRepository.save(user);
-                log.warn("Create: admin user has been created: email = {}, password = {} ",
+                log.warn("Create: admin user has been created: username = {}, password = {} ",
                     username, password);
             } else {
-                log.warn("Admin user: email = {}, password = {} ", username, password);
+                log.warn("Super admin: username = {}, password = {} ", username, password);
             }
             log.info("Application initialization completed .....");
         };

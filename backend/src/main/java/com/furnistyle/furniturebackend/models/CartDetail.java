@@ -1,12 +1,12 @@
 package com.furnistyle.furniturebackend.models;
 
-import jakarta.persistence.Column;
+import com.furnistyle.furniturebackend.models.embeddedid.CartDetailId;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,19 +20,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "cart_details")
 public class CartDetail {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "detail_id")
-    private Long id;
+    @EmbeddedId
+    private CartDetailId id;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    private User customerId;
+    @MapsId("userId")
+    @JoinColumn(name = "user_id", nullable = false)
+    private User owner;
 
     @ManyToOne
+    @MapsId("productId")
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Column(nullable = false)
     private Integer amount;
+
+    @PrePersist
+    protected void checkAmount() {
+        amount = 1;
+    }
 }

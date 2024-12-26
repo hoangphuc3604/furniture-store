@@ -1,6 +1,6 @@
 package com.furnistyle.furniturebackend.enums;
 
-public enum EAccountStatus {
+public enum EUserStatus {
     ACTIVE,
     INACTIVE
 }

@@ -1,9 +1,8 @@
 package com.furnistyle.furniturebackend.models;
 
-import com.furnistyle.furniturebackend.enums.EAccountStatus;
 import com.furnistyle.furniturebackend.enums.EGender;
 import com.furnistyle.furniturebackend.enums.ERole;
-import jakarta.persistence.CascadeType;
+import com.furnistyle.furniturebackend.enums.EUserStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -64,7 +63,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private EGender gender;
     private ERole role;
-    private EAccountStatus status;
+    private EUserStatus status;
 
     @OneToMany(mappedBy = "owner")
     private List<CartDetail> cartDetails;

@@ -1,12 +1,12 @@
 package com.furnistyle.furniturebackend.services.impl;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.furnistyle.furniturebackend.dtos.requests.AuthenticationRequest;
 import com.furnistyle.furniturebackend.dtos.requests.RegisterRequest;
 import com.furnistyle.furniturebackend.dtos.responses.AuthenticationResponse;
 import com.furnistyle.furniturebackend.enums.EGender;
 import com.furnistyle.furniturebackend.enums.ERole;
+import com.furnistyle.furniturebackend.enums.EUserStatus;
 import com.furnistyle.furniturebackend.models.Token;
 import com.furnistyle.furniturebackend.models.User;
 import com.furnistyle.furniturebackend.repositories.TokenRepository;
@@ -45,6 +45,7 @@ public class AuthServiceImpl implements AuthService {
             .gender(EGender.valueOf(request.getGender()))
             .password(passwordEncoder.encode(request.getPassword()))
             .role(ERole.valueOf(request.getRole()))
+            .status(EUserStatus.valueOf(request.getStatus()))
             .build();
 
         return repository.save(user).getId() > 0;

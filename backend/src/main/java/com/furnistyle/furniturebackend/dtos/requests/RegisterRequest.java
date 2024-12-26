@@ -14,5 +14,5 @@ public class RegisterRequest {
     private LocalDate dateOfBirth;
     private String gender;
     private String role;
-    private boolean status;
+    private String status;
 }

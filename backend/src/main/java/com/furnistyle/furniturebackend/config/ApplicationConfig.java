@@ -4,6 +4,7 @@ package com.furnistyle.furniturebackend.config;
 import com.furnistyle.furniturebackend.auditing.ApplicationAuditAware;
 import com.furnistyle.furniturebackend.enums.EGender;
 import com.furnistyle.furniturebackend.enums.ERole;
+import com.furnistyle.furniturebackend.enums.EUserStatus;
 import com.furnistyle.furniturebackend.models.User;
 import com.furnistyle.furniturebackend.repositories.UserRepository;
 import java.time.LocalDate;
@@ -51,9 +52,6 @@ public class ApplicationConfig {
     @Value("${application.admin.default.dob}")
     private LocalDate dateOfBirth;
 
-    @Value("${application.admin.default.gender}")
-    private String gender;
-
     @Bean
     @ConditionalOnProperty(
         prefix = "spring",
@@ -73,6 +71,7 @@ public class ApplicationConfig {
                     .gender(EGender.MALE)
                     .password(passwordEncoder().encode(password))
                     .role(ERole.SUPER_ADMIN)
+                    .status(EUserStatus.ACTIVE)
                     .build();
                 userRepository.save(user);
                 log.warn("Create: admin user has been created: username = {}, password = {} ",

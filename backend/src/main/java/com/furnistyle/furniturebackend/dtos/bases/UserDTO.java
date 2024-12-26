@@ -1,7 +1,8 @@
 package com.furnistyle.furniturebackend.dtos.bases;
 
-import com.furnistyle.furniturebackend.enums.EAccountStatus;
+import com.furnistyle.furniturebackend.enums.EGender;
 import com.furnistyle.furniturebackend.enums.ERole;
+import com.furnistyle.furniturebackend.enums.EUserStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,7 +34,7 @@ public class UserDTO {
     @Past(message = "Ngày sinh phải là trong quá khứ")
     private LocalDate dateOfBirth;
 
-    private ERole gender;
+    private EGender gender;
     private ERole role;
-    private EAccountStatus status;
+    private EUserStatus status;
 }

@@ -1,6 +1,7 @@
 package com.furnistyle.furniturebackend.models;
 
 import com.furnistyle.furniturebackend.enums.EAccountStatus;
+import com.furnistyle.furniturebackend.enums.EGender;
 import com.furnistyle.furniturebackend.enums.ERole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +21,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Check;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -59,11 +59,8 @@ public class User implements UserDetails {
     @Temporal(TemporalType.DATE)
     private LocalDate dateOfBirth;
 
-    @Column(nullable = false, length = 6)
-    @Check(constraints = "gender IN ('MALE', 'FEMALE')")
-    private String gender;
-
     @Enumerated(EnumType.STRING)
+    private EGender gender;
     private ERole role;
     private EAccountStatus status;
 

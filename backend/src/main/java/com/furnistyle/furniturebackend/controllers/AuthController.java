@@ -57,8 +57,8 @@ public class AuthController {
         return ResponseEntity.ok("Deploy successfully!");
     }
 
-    @GetMapping("/test2")
-    public ResponseEntity<String> test2() {
+    @GetMapping("/test3")
+    public ResponseEntity<String> test3() {
         return ResponseEntity.ok("CI/CD thành công rồi mấy đứa ơi :)))");
     }
 

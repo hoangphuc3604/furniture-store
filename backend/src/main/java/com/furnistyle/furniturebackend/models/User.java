@@ -3,10 +3,12 @@ package com.furnistyle.furniturebackend.models;
 import com.furnistyle.furniturebackend.enums.EAccountStatus;
 import com.furnistyle.furniturebackend.enums.EGender;
 import com.furnistyle.furniturebackend.enums.ERole;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -67,13 +69,13 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "owner")
     private List<CartDetail> cartDetails;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Token> tokens;
 
-    @OneToMany(mappedBy = "createdCustomer")
+    @OneToMany(mappedBy = "createdCustomer", fetch = FetchType.LAZY)
     private List<Order> orders;
 
-    @OneToMany(mappedBy = "confirmedAdmin")
+    @OneToMany(mappedBy = "confirmedAdmin", fetch = FetchType.LAZY)
     private List<Order> confirmOrders;
 
 

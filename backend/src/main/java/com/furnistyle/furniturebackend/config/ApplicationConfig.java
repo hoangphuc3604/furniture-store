@@ -2,6 +2,7 @@ package com.furnistyle.furniturebackend.config;
 
 
 import com.furnistyle.furniturebackend.auditing.ApplicationAuditAware;
+import com.furnistyle.furniturebackend.enums.EGender;
 import com.furnistyle.furniturebackend.enums.ERole;
 import com.furnistyle.furniturebackend.models.User;
 import com.furnistyle.furniturebackend.repositories.UserRepository;
@@ -69,7 +70,7 @@ public class ApplicationConfig {
                     .phone(phone)
                     .address(address)
                     .dateOfBirth(dateOfBirth)
-                    .gender(gender)
+                    .gender(EGender.MALE)
                     .password(passwordEncoder().encode(password))
                     .role(ERole.SUPER_ADMIN)
                     .build();

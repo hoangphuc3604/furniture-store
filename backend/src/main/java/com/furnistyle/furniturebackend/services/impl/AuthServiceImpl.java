@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.furnistyle.furniturebackend.dtos.requests.AuthenticationRequest;
 import com.furnistyle.furniturebackend.dtos.requests.RegisterRequest;
 import com.furnistyle.furniturebackend.dtos.responses.AuthenticationResponse;
+import com.furnistyle.furniturebackend.enums.EGender;
 import com.furnistyle.furniturebackend.enums.ERole;
 import com.furnistyle.furniturebackend.models.Token;
 import com.furnistyle.furniturebackend.models.User;
@@ -41,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
             .phone(request.getPhone())
             .address(request.getAddress())
             .dateOfBirth(request.getDateOfBirth())
-            .gender(request.getGender())
+            .gender(EGender.valueOf(request.getGender()))
             .password(passwordEncoder.encode(request.getPassword()))
             .role(ERole.valueOf(request.getRole()))
             .build();

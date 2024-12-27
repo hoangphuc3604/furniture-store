@@ -24,7 +24,7 @@ public class CartDetail {
     private CartDetailId id;
 
     @ManyToOne
-    @MapsId("userId")
+    @MapsId("ownerId")
     @JoinColumn(name = "user_id", nullable = false)
     private User owner;
 

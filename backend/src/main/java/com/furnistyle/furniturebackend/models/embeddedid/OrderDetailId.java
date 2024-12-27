@@ -1,8 +1,12 @@
 package com.furnistyle.furniturebackend.models.embeddedid;
 
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderDetailId {
     private Long orderId;
     private Long productId;

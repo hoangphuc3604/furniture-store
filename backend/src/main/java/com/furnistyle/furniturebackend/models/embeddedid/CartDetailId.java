@@ -2,12 +2,16 @@ package com.furnistyle.furniturebackend.models.embeddedid;
 
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Embeddable
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CartDetailId implements Serializable {
-    private Long userId;
+    private Long ownerId;
     private Long productId;
 
     @Override
@@ -19,11 +23,11 @@ public class CartDetailId implements Serializable {
             return false;
         }
         CartDetailId that = (CartDetailId) o;
-        return userId.equals(that.userId) && productId.equals(that.productId);
+        return ownerId.equals(that.ownerId) && productId.equals(that.productId);
     }
 
     @Override
     public int hashCode() {
-        return 31 * userId.hashCode() + productId.hashCode();
+        return 31 * ownerId.hashCode() + productId.hashCode();
     }
 }

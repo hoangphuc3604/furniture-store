@@ -1,9 +1,9 @@
 package com.furnistyle.furniturebackend.exceptions;
 
-public class ErrorConstraintFieldException extends RuntimeException {
+public class DataAccessException extends RuntimeException {
     final String message;
 
-    public ErrorConstraintFieldException(String message) {
+    public DataAccessException(String message) {
         this.message = message;
     }
 

@@ -37,7 +37,7 @@ public class Order {
     private User createdCustomer;
 
     @ManyToOne
-    @JoinColumn(name = "confirm_admin")
+    @JoinColumn(name = "confirmed_admin")
     private User confirmedAdmin;
 
     @Enumerated(EnumType.STRING)

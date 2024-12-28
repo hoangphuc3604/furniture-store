@@ -9,29 +9,29 @@ import lombok.Data;
 
 @Data
 public class ProductRequest {
-    @NotBlank(message = "Product name is required")
-    @Size(min = 1, max = 200, message = "Product name must be between 1 and 200 characters")
-    private String name;
-
-    @Min(value = 0, message = "Price must be greater or equal to 0")
-    private Double price;
-
-    @NotNull(message = "Category is required")
-    @JsonProperty("category_id")
-    private Long categoryId;
-
-    @NotNull(message = "Material is required")
-    @JsonProperty("material_id")
-    private Long materialId;
-
-    @NotBlank(message = "Origin is required")
-    @Size(min = 1, max = 100, message = "Origin must be between 1 and 100 characters")
-    private String origin;
-
-    @NotBlank(message = "Size is required")
-    @Size(min = 1, max = 50, message = "Size must be between 1 and 100 characters")
-    private String size;
-
-    private String description;
+//    @NotBlank(message = "Tên sản phẩm không được để trống!")
+//    @Size(min = 1, max = 200, message = "Độ dài tên sản phẩm phải từ 1 đến 200 ký tự!")
+//    private String name;
+//
+//    @Min(value = 0, message = "Giá tiền phải lớn hơn hoặc bằng 0!")
+//    private Double price;
+//
+//    @NotNull(message = "Phân loại không được để trống!")
+//    @JsonProperty("category_id")
+//    private Long categoryId;
+//
+//    @NotNull(message = "Chất liệu không được để trống!")
+//    @JsonProperty("material_id")
+//    private Long materialId;
+//
+//    @NotBlank(message = "Xuất xứ không được để trống!")
+//    @Size(min = 1, max = 100, message = "Xuất xứ phải từ 1 đến 100 ký tự!")
+//    private String origin;
+//
+//    @NotBlank(message = "Kích cỡ không được để trống!")
+//    @Size(min = 1, max = 50, message = "Kích cỡ phải từ 1 đến 50 ký tự!")
+//    private String size;
+//
+//    private String description;
 
 }

@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 public class UserDTO {

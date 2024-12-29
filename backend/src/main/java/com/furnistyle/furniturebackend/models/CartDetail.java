@@ -3,6 +3,7 @@ package com.furnistyle.furniturebackend.models;
 import com.furnistyle.furniturebackend.models.embeddedid.CartDetailId;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
@@ -23,12 +24,12 @@ public class CartDetail {
     @EmbeddedId
     private CartDetailId id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("ownerId")
     @JoinColumn(name = "user_id", nullable = false)
     private User owner;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("productId")
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;

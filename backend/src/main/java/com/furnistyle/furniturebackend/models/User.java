@@ -65,7 +65,7 @@ public class User implements UserDetails {
     private ERole role;
     private EUserStatus status;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private List<CartDetail> cartDetails;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

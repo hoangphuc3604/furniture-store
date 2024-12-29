@@ -2,6 +2,7 @@ package com.furnistyle.furniturebackend.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,6 +30,6 @@ public class Material {
     @Column(name = "material_name", nullable = false, length = 100)
     private String materialName;
 
-    @OneToMany(mappedBy = "material")
+    @OneToMany(mappedBy = "material", fetch = FetchType.LAZY)
     private List<Product> products;
 }

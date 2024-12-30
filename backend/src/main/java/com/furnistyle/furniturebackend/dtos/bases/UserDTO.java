@@ -1,5 +1,6 @@
 package com.furnistyle.furniturebackend.dtos.bases;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.furnistyle.furniturebackend.enums.EGender;
 import com.furnistyle.furniturebackend.enums.ERole;
 import com.furnistyle.furniturebackend.enums.EUserStatus;
@@ -10,7 +11,6 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 public class UserDTO {
@@ -33,7 +33,9 @@ public class UserDTO {
     private String email;
 
     @Past(message = "Ngày sinh phải là trong quá khứ")
+    @JsonProperty("date_of_birth")
     private LocalDate dateOfBirth;
+
 
     private EGender gender;
     private ERole role;

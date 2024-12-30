@@ -1,15 +1,22 @@
 package com.furnistyle.furniturebackend.services.impl;
 
 import com.furnistyle.furniturebackend.dtos.bases.UserDTO;
+import com.furnistyle.furniturebackend.dtos.requests.UpdateUserRequest;
 import com.furnistyle.furniturebackend.enums.ERole;
 import com.furnistyle.furniturebackend.enums.EUserStatus;
+import com.furnistyle.furniturebackend.exceptions.BadRequestException;
 import com.furnistyle.furniturebackend.exceptions.DataAccessException;
 import com.furnistyle.furniturebackend.exceptions.NotFoundException;
 import com.furnistyle.furniturebackend.mappers.UserMapper;
+import com.furnistyle.furniturebackend.models.Token;
 import com.furnistyle.furniturebackend.models.User;
+import com.furnistyle.furniturebackend.repositories.TokenRepository;
 import com.furnistyle.furniturebackend.repositories.UserRepository;
 import com.furnistyle.furniturebackend.services.UserService;
+import com.furnistyle.furniturebackend.utils.Constants;
+import jakarta.validation.ValidationException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,84 +25,101 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private final TokenRepository tokenRepository;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public boolean changePassword(String username, String password) {
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user.isEmpty()) {
-            throw new NotFoundException("Tên người dùng: " + username + " không tồn tại!");
+    public boolean changePassword(String username, String oldPassword, String newPassword) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new NotFoundException(Constants.Message.INCORRECT_USERNAME_OR_PASSWORD_MESSAGE);
         }
-        user.get().setPassword(passwordEncoder.encode(password));
+
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new ValidationException(Constants.Message.INCORRECT_OLD_PASSWORD_MESSAGE);
+        }
+
+        if (Objects.equals(oldPassword, newPassword)) {
+            throw new BadRequestException(Constants.Message.DUPLICATE_OLD_NEW_PASSWORD_MESSAGE);
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
         try {
-            userRepository.save(user.get());
+            userRepository.save(user);
         } catch (Exception e) {
-            throw new DataAccessException("Không thể thay đổi mật khẩu người dùng!");
+            throw new DataAccessException(Constants.Message.CAN_NOT_CHANGE_PASSWORD_MESSAGE);
         }
 
         return true;
     }
 
     @Override
-    public UserDTO getUserByUsername(String username) {
-        return userMapper.toDTO(userRepository.findByUsername(username)
-            .orElseThrow(() -> new NotFoundException("Không tìm thấy thông tin người dùng với username: " + username)));
+    public UserDTO getUserByToken(String token) {
+        Token tokens = tokenRepository.findByToken(token)
+            .orElseThrow(() -> new NotFoundException(Constants.Message.NOT_FOUND_USER));
+        User user = tokens.getUser();
+
+        if (user == null) {
+            throw new NotFoundException(Constants.Message.NOT_FOUND_USER);
+        }
+        return userMapper.toDTO(user);
     }
 
     @Override
     public UserDTO getUserById(Long id) {
         return userMapper.toDTO(userRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Không tìm thấy thông tin người dùng với id: " + id)));
+            .orElseThrow(() -> new NotFoundException(Constants.Message.NOT_FOUND_USER)));
     }
 
     @Override
-    public List<UserDTO> getAllUsers() {
-        return userMapper.toDTOs(userRepository.findAll());
+    public List<UserDTO> getAllAdmin() {
+        return userMapper.toDTOs(userRepository.findAllByRole(ERole.ADMIN));
     }
 
     @Override
-    public boolean updateUser(UserDTO userDTO) {
-        User user = userRepository.findById(userDTO.getId()).orElseThrow(() -> new NotFoundException("User not found"));
-        user.setAddress(userDTO.getAddress());
+    public boolean updateUser(UpdateUserRequest updateUserRequest) {
+        User user = userRepository.findById(updateUserRequest.getId())
+            .orElseThrow(() -> new NotFoundException(Constants.Message.NOT_FOUND_USER));
+        user.setAddress(updateUserRequest.getAddress());
         user.setFullname(user.getFullname());
-        user.setPhone(userDTO.getPhone());
+        user.setPhone(updateUserRequest.getPhone());
+        user.setEmail(updateUserRequest.getEmail());
         try {
             userRepository.save(user);
         } catch (Exception e) {
-            throw new DataAccessException("Không thể cập nhật thông tin người dùng!");
+            throw new DataAccessException(Constants.Message.CAN_NOT_UPDATE_INFO_USER);
         }
 
         return true;
     }
 
     @Override
-    public void deactivateUserById(Long id) {
+    public void deactivateUserWithId(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.setStatus(EUserStatus.INACTIVE);
             userRepository.save(user);
         } else {
-            throw new NotFoundException("Không tìm thấy thông tin người dùng với id: " + id);
+            throw new NotFoundException(Constants.Message.NOT_FOUND_USER);
         }
     }
 
     @Override
-    public void activateUserById(Long id) {
+    public void activateUserWithId(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.setStatus(EUserStatus.ACTIVE);
             userRepository.save(user);
         } else {
-            throw new NotFoundException("Không tìm thấy thông tin người dùng với id: " + id);
+            throw new NotFoundException(Constants.Message.NOT_FOUND_USER);
         }
     }
 
     @Override
-    public List<UserDTO> findAllNormalUser() {
+    public List<UserDTO> getAllNormalUser() {
         return userMapper.toDTOs(userRepository.findAllByRole(ERole.USER));
     }
 }

@@ -1,22 +1,23 @@
 package com.furnistyle.furniturebackend.services;
 
 import com.furnistyle.furniturebackend.dtos.bases.UserDTO;
+import com.furnistyle.furniturebackend.dtos.requests.UpdateUserRequest;
 import java.util.List;
 
 public interface UserService {
-    boolean changePassword(String username, String password);
+    boolean changePassword(String username, String olePassword, String newPassword);
 
-    UserDTO getUserByUsername(String username);
+    UserDTO getUserByToken(String token);
 
     UserDTO getUserById(Long id);
 
-    List<UserDTO> getAllUsers();
+    List<UserDTO> getAllAdmin();
 
-    boolean updateUser(UserDTO userDTO);
+    boolean updateUser(UpdateUserRequest updateUserRequest);
 
-    void deactivateUserById(Long id);
+    void deactivateUserWithId(Long id);
 
-    void activateUserById(Long id);
+    void activateUserWithId(Long id);
 
-    List<UserDTO> findAllNormalUser();
+    List<UserDTO> getAllNormalUser();
 }

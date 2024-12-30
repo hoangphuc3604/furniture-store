@@ -5,12 +5,15 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
+@Data
 public class ProductDTO {
     Long id;
 
     @NotBlank(message = "Tên sản phẩm không được để trống!")
     @Size(min = 1, max = 200, message = "Độ dài tên sản phẩm phải từ 1 đến 200 ký tự!")
+    @JsonProperty("name")
     private String name;
 
     @Min(value = 0, message = "Giá tiền phải lớn hơn hoặc bằng 0!")

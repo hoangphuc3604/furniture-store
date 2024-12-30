@@ -11,6 +11,6 @@ public class MaterialDTO {
 
     @NotBlank(message = "Tên chất liệu không được để trống!")
     @Size(min = 1, max = 100, message = "Tên chất liệu phải từ 1 đến 100 ký tự!")
-    @JsonProperty("category_name")
-    private String categoryName;
+    @JsonProperty("material_name")
+    private String materialName;
 }

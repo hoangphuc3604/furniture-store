@@ -31,7 +31,7 @@ public class Product {
     private Long id;
 
     @Column(name = "product_name", nullable = false, length = 200)
-    private String productName;
+    private String name;
 
     @Column(nullable = false)
     private Double price;

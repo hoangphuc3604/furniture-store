@@ -38,7 +38,7 @@ public class CategoryController {
 
     @PutMapping("")
     public ResponseEntity<CategoryDTO> updateCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
-        return ResponseEntity.ok(categoryService.createCategory(categoryDTO));
+        return ResponseEntity.ok(categoryService.updateCategory(categoryDTO));
     }
 
     @DeleteMapping("/{id}")

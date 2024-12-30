@@ -25,7 +25,7 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
 
-    private static final String[] WHITE_LIST_URL = {"auth/**", "products/**", "categories/**"};
+    private static final String[] WHITE_LIST_URL = {"auth/**", "products/**", "categories/**", "materials/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

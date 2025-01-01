@@ -26,7 +26,7 @@ public class HandleExceptionAPI {
     }
 
     @ExceptionHandler({BadRequestException.class, ErrorConstraintFieldException.class,
-        ValidationException.class})
+        ValidationException.class, UnauthorizedException.class})
     public ResponseEntity<String> handleBadRequestExceptions(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(e.getMessage());

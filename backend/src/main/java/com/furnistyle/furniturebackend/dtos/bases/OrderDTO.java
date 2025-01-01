@@ -19,10 +19,12 @@ public class OrderDTO {
 
     @NotNull(message = "Admin xác nhận không được để trống")
     @JsonProperty("confirmed_admin_id")
-    private User confirmedAdminId;
+    private Long confirmedAdminId;
 
     @NotBlank(message = "Trạng thái không được để trống!")
     private String status;
+
+    private LocalDateTime createdDate;
 
     @NotBlank(message = "Địa chi không được để trống!")
     @Size(min = 1, max = 255, message = "Địa chỉ phải nằm từ 1 đến 255 ký tự")

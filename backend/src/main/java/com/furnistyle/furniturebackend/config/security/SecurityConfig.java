@@ -28,7 +28,8 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
 
-    private static final String[] WHITE_LIST_URL = {"auth/**", "products/**", "categories/**", "materials/**"};
+    private static final String[] WHITE_LIST_URL = {"auth/**", "products/**", "categories/**", "materials/**",
+        "/order/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -36,7 +37,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(req -> req
                 .requestMatchers(WHITE_LIST_URL).permitAll()
                 .requestMatchers("/user/*")
-                .hasAnyRole(String.valueOf(ERole.USER), String.valueOf(ERole.ADMIN), String.valueOf(ERole.SUPER_ADMIN))
+                .hasAnyRole(String.valueOf(ERole.USER), String.valueOf(ERole.ADMIN),
+                    String.valueOf(ERole.SUPER_ADMIN))
                 .requestMatchers("/user/admin/*")
                 .hasAnyRole(String.valueOf(ERole.ADMIN), String.valueOf(ERole.SUPER_ADMIN))
                 .requestMatchers("/user/superAdmin/*").hasRole(String.valueOf(ERole.SUPER_ADMIN))
@@ -48,7 +50,8 @@ public class SecurityConfig {
                 .logoutUrl("/auth/logout")
                 .logoutSuccessUrl("/auth/login")
                 .addLogoutHandler(logoutHandler)
-                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
+                .logoutSuccessHandler((request, response, authentication)
+                    -> SecurityContextHolder.clearContext())
             );
 
         return http.build();

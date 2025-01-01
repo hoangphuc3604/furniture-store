@@ -47,22 +47,6 @@ public class Order {
     @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate;
 
-    @PrePersist
-    protected void onCreate() {
-        createdDate = LocalDateTime.now();
-
-        if (createdCustomer == confirmedAdmin) {
-            throw new ErrorConstraintFieldException("nhân viên xác nhận không được xác nhận đơn hàng của mình!");
-        }
-    }
-
-    @PreUpdate
-    protected void checkUpdate() {
-        if (createdCustomer == confirmedAdmin) {
-            throw new ErrorConstraintFieldException("nhân viên xác nhận không được xác nhận đơn hàng của mình!");
-        }
-    }
-
     @Column(nullable = false)
     private String address;
 

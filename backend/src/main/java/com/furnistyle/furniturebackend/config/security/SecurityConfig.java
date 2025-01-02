@@ -43,6 +43,7 @@ public class SecurityConfig {
                 .hasAnyRole(String.valueOf(ERole.ADMIN), String.valueOf(ERole.SUPER_ADMIN))
                 .requestMatchers("/user/superAdmin/*").hasRole(String.valueOf(ERole.SUPER_ADMIN))
                 .requestMatchers("/cart/*").authenticated()
+                .requestMatchers("/superadmin/*").hasRole(String.valueOf(ERole.SUPER_ADMIN))
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authenticationProvider)

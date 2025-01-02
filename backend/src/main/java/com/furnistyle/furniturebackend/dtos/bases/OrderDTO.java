@@ -1,8 +1,6 @@
 package com.furnistyle.furniturebackend.dtos.bases;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.furnistyle.furniturebackend.enums.EOrderStatus;
-import com.furnistyle.furniturebackend.models.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,11 +15,9 @@ public class OrderDTO {
     @JsonProperty("created_customer_id")
     private Long createdCustomerId;
 
-    @NotNull(message = "Admin xác nhận không được để trống")
     @JsonProperty("confirmed_admin_id")
     private Long confirmedAdminId;
 
-    @NotBlank(message = "Trạng thái không được để trống!")
     private String status;
 
     private LocalDateTime createdDate;

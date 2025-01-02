@@ -60,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
             authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         } catch (Exception e) {
-            throw new BadRequestException(Constants.Message.INCORRECT_USERNAME_OR_PASSWORD_MESSAGE);
+            throw new BadRequestException(Constants.Message.INCORRECT_USERNAME_OR_PASS);
         }
         var user = repository.findByUsername(request.getUsername());
         if (user == null) {
@@ -69,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
 
         boolean isDisable = user.getStatus() != EUserStatus.ACTIVE;
         if (isDisable) {
-            throw new BadRequestException(Constants.Message.BLOCKED_ACOUNT);
+            throw new BadRequestException(Constants.Message.BLOCKED_ACCOUNT);
         }
 
         var jwtToken = jwtService.generateToken(user);

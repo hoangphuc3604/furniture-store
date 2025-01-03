@@ -2,6 +2,7 @@ package com.furnistyle.furniturebackend.controllers;
 
 import com.furnistyle.furniturebackend.dtos.bases.MaterialDTO;
 import com.furnistyle.furniturebackend.services.MaterialService;
+import com.furnistyle.furniturebackend.utils.Constants;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,9 @@ public class MaterialController {
     private final MaterialService materialService;
 
     @PostMapping("")
-    public ResponseEntity<MaterialDTO> createMaterial(@Valid @RequestBody MaterialDTO materialDTO) {
-        return ResponseEntity.ok(materialService.createMaterial(materialDTO));
+    public ResponseEntity<String> createMaterial(@Valid @RequestBody MaterialDTO materialDTO) {
+        materialService.createMaterial(materialDTO);
+        return ResponseEntity.ok(Constants.Message.ADD_MATERIAL_SUCCESSFUL);
     }
 
     @GetMapping("/{id}")
@@ -37,15 +39,16 @@ public class MaterialController {
     }
 
     @PutMapping("")
-    public ResponseEntity<MaterialDTO> updateMaterial(@Valid @RequestBody MaterialDTO materialDTO) {
-        return ResponseEntity.ok(materialService.createMaterial(materialDTO));
+    public ResponseEntity<String> updateMaterial(@Valid @RequestBody MaterialDTO materialDTO) {
+        materialService.updateMaterial(materialDTO);
+        return ResponseEntity.ok(Constants.Message.UPDATE_MATERIAL_SUCCESSFUL);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteMaterialById(@PathVariable("id") Long materialId) {
+    public ResponseEntity<String> deleteMaterialById(@PathVariable("id") Long materialId) {
         try {
             materialService.deleteMaterial(materialId);
-            return ResponseEntity.ok("Deleted Material id:" + materialId);
+            return ResponseEntity.ok(Constants.Message.DELETE_MATERIAL_SUCCESSFUL);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

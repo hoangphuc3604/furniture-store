@@ -9,6 +9,7 @@ import com.furnistyle.furniturebackend.models.Product;
 import com.furnistyle.furniturebackend.repositories.MaterialRepository;
 import com.furnistyle.furniturebackend.repositories.ProductRepository;
 import com.furnistyle.furniturebackend.services.MaterialService;
+import com.furnistyle.furniturebackend.utils.Constants;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class MaterialServiceImpl implements MaterialService {
     public MaterialDTO getMaterialById(long id) {
         return materialMapper.toDTO(materialRepository
             .findById(id)
-            .orElseThrow(() -> new NotFoundException("Không tìm thấy chất liệu có id: " + id)));
+            .orElseThrow(() -> new NotFoundException(Constants.Message.NOT_FOUND_MATERIAL)));
     }
 
     @Override
@@ -40,12 +41,12 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public MaterialDTO updateMaterial(MaterialDTO materialDTO) {
         Material existingMaterial = materialRepository.findById(materialDTO.getId())
-            .orElseThrow(() -> new NotFoundException("Không tìm thấy chất liệu!"));
+            .orElseThrow(() -> new NotFoundException(Constants.Message.NOT_FOUND_MATERIAL));
         existingMaterial.setMaterialName(materialDTO.getMaterialName());
         try {
             materialRepository.save(existingMaterial);
         } catch (Exception e) {
-            throw new DataAccessException("Không thể cập nhật thông tin chất liệu!");
+            throw new DataAccessException(Constants.Message.UPDATE_MATERIAL_FAILED);
         }
         return materialMapper.toDTO(existingMaterial);
     }
@@ -53,11 +54,11 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public MaterialDTO deleteMaterial(long id) throws Exception {
         Material material = materialRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Không tìm thấy chất liệu!"));
+            .orElseThrow(() -> new NotFoundException(Constants.Message.NOT_FOUND_MATERIAL));
 
         List<Product> products = productRepository.findByMaterialId(id);
         if (!products.isEmpty()) {
-            throw new IllegalStateException("Không thể xóa chất liệu vì có các phẩm liên quan!");
+            throw new IllegalStateException(Constants.Message.DELETE_MATERIAL_FAILED);
         } else {
             materialRepository.deleteById(id);
             return materialMapper.toDTO(material);

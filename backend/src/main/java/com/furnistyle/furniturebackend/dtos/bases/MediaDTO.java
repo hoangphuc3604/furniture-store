@@ -3,9 +3,11 @@ package com.furnistyle.furniturebackend.dtos.bases;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class MediaDTO {
     Long id;
 

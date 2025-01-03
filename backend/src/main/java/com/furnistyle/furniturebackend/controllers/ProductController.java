@@ -3,12 +3,14 @@ package com.furnistyle.furniturebackend.controllers;
 import com.furnistyle.furniturebackend.dtos.bases.ProductDTO;
 import com.furnistyle.furniturebackend.dtos.responses.ProductListResponse;
 import com.furnistyle.furniturebackend.services.ProductService;
+import com.furnistyle.furniturebackend.utils.Constants;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,8 +27,9 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("")
-    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO) {
-        return ResponseEntity.ok(productService.createProduct(productDTO));
+    public ResponseEntity<String> createProduct(@Valid @RequestBody ProductDTO productDTO) {
+        productService.createProduct(productDTO);
+        return ResponseEntity.ok(Constants.Message.ADD_PRODUCT_SUCCESSFUL);
     }
 
     @GetMapping("/{id}")
@@ -36,10 +39,13 @@ public class ProductController {
 
     @GetMapping("")
     public ResponseEntity<ProductListResponse> getProducts(
+        @RequestParam(defaultValue = "") String keyword,
+        @RequestParam(defaultValue = "0", name = "category_id") Long categoryId,
+        @RequestParam(defaultValue = "0", name = "material_id") Long materialId,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int limit) {
         PageRequest pageRequest = PageRequest.of(page, limit, Sort.by("id").ascending());
-        Page<ProductDTO> productDTOPage = productService.getAllProducts(pageRequest);
+        Page<ProductDTO> productDTOPage = productService.getAllProducts(keyword, categoryId, materialId, pageRequest);
         return ResponseEntity.ok(ProductListResponse
             .builder()
             .products(productDTOPage.getContent())
@@ -48,7 +54,14 @@ public class ProductController {
     }
 
     @PutMapping("")
-    public ResponseEntity<ProductDTO> updateProduct(@Valid @RequestBody ProductDTO productDTO) {
-        return ResponseEntity.ok(productService.updateProduct(productDTO));
+    public ResponseEntity<String> updateProduct(@Valid @RequestBody ProductDTO productDTO) {
+        productService.updateProduct(productDTO);
+        return ResponseEntity.ok(Constants.Message.UPDATE_PRODUCT_SUCCESSFUL);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable("id") Long productId) {
+        productService.deleteProduct(productId);
+        return ResponseEntity.ok(Constants.Message.DELETE_PRODUCT_SUCCESSFUL);
     }
 }

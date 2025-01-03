@@ -9,6 +9,7 @@ import com.furnistyle.furniturebackend.models.Product;
 import com.furnistyle.furniturebackend.repositories.CategoryRepository;
 import com.furnistyle.furniturebackend.repositories.ProductRepository;
 import com.furnistyle.furniturebackend.services.CategoryService;
+import com.furnistyle.furniturebackend.utils.Constants;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO getCategoryById(long id) {
         return categoryMapper.toDTO(categoryRepository
             .findById(id)
-            .orElseThrow(() -> new NotFoundException("Không tìm thấy phân loại có id: " + id)));
+            .orElseThrow(() -> new NotFoundException(Constants.Message.NOT_FOUND_CATEGORY)));
     }
 
     @Override
@@ -40,12 +41,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDTO updateCategory(CategoryDTO categoryDTO) {
         if (!categoryRepository.existsById(categoryDTO.getId())) {
-            throw new NotFoundException("Không tìm thấy phân loại!");
+            throw new NotFoundException(Constants.Message.NOT_FOUND_CATEGORY);
         }
         try {
             categoryRepository.save(categoryMapper.toEntity(categoryDTO));
         } catch (Exception e) {
-            throw new DataAccessException("Không thể cập nhật thông tin phân loại!");
+            throw new DataAccessException(Constants.Message.UPDATE_CATEGORY_FAILED);
         }
         return categoryMapper.toDTO(categoryMapper.toEntity(categoryDTO));
     }
@@ -54,11 +55,11 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO deleteCategory(long id) throws Exception {
         Category category = categoryRepository
             .findById(id)
-            .orElseThrow(() -> new NotFoundException("Không tìm thấy phân loại!"));
+            .orElseThrow(() -> new NotFoundException(Constants.Message.NOT_FOUND_CATEGORY));
 
         List<Product> products = productRepository.findByCategoryId(id);
         if (!products.isEmpty()) {
-            throw new IllegalStateException("Không thể xóa phân loại vì có các phẩm liên quan!");
+            throw new IllegalStateException(Constants.Message.DELETE_CATEGORY_FAILED);
         } else {
             categoryRepository.deleteById(id);
             return categoryMapper.toDTO(category);

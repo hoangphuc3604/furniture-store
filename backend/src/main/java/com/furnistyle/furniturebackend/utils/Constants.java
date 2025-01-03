@@ -38,5 +38,39 @@ public class Constants {
         public static final String REMOVE_FROM_CART_SUCCESSFUL = "Đã xóa sản phẩm khỏi giỏ hàng!";
         public static final String ADD_TO_CART_SUCCESSFUL = "Đã thêm sản phẩm vào giỏ hàng!";
         public static final String UPDATE_AMOUNT_PRODUCT_IN_CART_SUCCESSFUL = "Cập nhật số lượng thành công!";
+
+        public static final String ADD_CATEGORY_SUCCESSFUL = "Thêm phân loại mới thành công!";
+        public static final String UPDATE_CATEGORY_SUCCESSFUL = "Cập nhật phân loại thành công!";
+        public static final String DELETE_CATEGORY_SUCCESSFUL = "Xóa phân loại thành công!";
+        public static final String NOT_FOUND_CATEGORY = "Không tìm thấy phân loại!";
+        public static final String DELETE_CATEGORY_FAILED = "Không thể xóa phân loại vì có các phẩm liên quan!";
+        public static final String UPDATE_CATEGORY_FAILED = "Lỗi cập nhật thông tin phân loại!";
+
+        public static final String ADD_MATERIAL_SUCCESSFUL = "Thêm chất liệu mới thành công!";
+        public static final String UPDATE_MATERIAL_SUCCESSFUL = "Cập nhật chất liệu thành công!";
+        public static final String DELETE_MATERIAL_SUCCESSFUL = "Xóa chất liệu thành công!";
+        public static final String NOT_FOUND_MATERIAL = "Không tìm thấy chất liệu!";
+        public static final String DELETE_MATERIAL_FAILED = "Không thể xóa chất liệu vì có các phẩm liên quan!";
+        public static final String UPDATE_MATERIAL_FAILED = "Lỗi cập nhật thông tin chất liệu!";
+
+        public static final String ADD_PRODUCT_SUCCESSFUL = "Thêm sản phẩm mới thành công!";
+        public static final String UPDATE_PRODUCT_SUCCESSFUL = "Cập nhật sản phẩm thành công!";
+        public static final String DELETE_PRODUCT_SUCCESSFUL = "Xóa sản phẩm thành công!";
+
+        public static final Integer MAXIMUM_IMAGES_PER_PRODUCT = 20;
+        public static final Integer MAXIMUM_SIZE_PER_PRODUCT = 10;  //MB
+        public static final String UPLOAD_IMAGES_MAX_20 = "Tổng số lượng ảnh của một sản phẩm không được vượt quá"
+                                                            + MAXIMUM_IMAGES_PER_PRODUCT;
+        public static final String UPLOAD_IMAGES_FILE_LARGE = "Dung lượng ảnh không được vượt quá "
+                                                            + MAXIMUM_SIZE_PER_PRODUCT + "MB!";
+        public static final String UPLOAD_IMAGES_FILE_MUST_BE_IMAGE = "File tải lên phải là hình ảnh!";
+        public static final String UPLOAD_IMAGES_FILE_SUCCESSFUL = "Upload ảnh thành công!";
+        public static final String INVALID_FORMAT_IMAGES = "File ảnh không hợp lệ!";
+        public static final String NOT_FOUND_DATABASE_IMAGES = "Không tìm thấy hình ảnh trong database!";
+        public static final String INVALID_URL = "URL không hợp lệ!";
+        public static final String NOT_FOUND_CLOUD_FILE = "Không tìm thấy file trên Cloudinary!";
+        public static final String DELETE_CLOUD_FILE_FAILED = "Lỗi khi xóa file trên Cloudinary!";
+        public static final String CLOUD_FOLDER_NAME = "Product Medias";
+
     }
 }

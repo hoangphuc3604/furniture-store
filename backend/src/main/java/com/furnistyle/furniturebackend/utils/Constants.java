@@ -71,6 +71,8 @@ public class Constants {
         public static final String NOT_FOUND_CLOUD_FILE = "Không tìm thấy file trên Cloudinary!";
         public static final String DELETE_CLOUD_FILE_FAILED = "Lỗi khi xóa file trên Cloudinary!";
         public static final String CLOUD_FOLDER_NAME = "Product Medias";
-
+        public static final String INVALID_STATUS = "Trạng thái cần cập nhật không hợp lệ!";
+        public static final String EXPIRED_CODE = "Mã OTP đã hết hạn!";
+        public static final String NOT_MATCH_CODE = "mã OTP không đúng, vui lòng thử lại!";
     }
 }

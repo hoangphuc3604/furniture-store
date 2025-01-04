@@ -12,5 +12,11 @@ public interface AuthService {
 
     AuthenticationResponse authenticate(AuthenticationRequest request);
 
+    boolean sendOTPForForgotPassword(String email);
+
+    boolean sendOTPForVerification(String email);
+
+    boolean validateOTP(String email, String code);
+
     void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }

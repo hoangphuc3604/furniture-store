@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,6 +23,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+
+    @GetMapping("/forgotPassword")
+    public ResponseEntity<Boolean> forgotPassword(@RequestParam String email) {
+        return ResponseEntity.ok(authService.sendOTPForForgotPassword(email));
+    }
+
+    @GetMapping("/verification")
+    public ResponseEntity<Boolean> verification(@RequestParam String email) {
+        return ResponseEntity.ok(authService.sendOTPForVerification(email));
+    }
+
+    @GetMapping("/validateOTP")
+    public ResponseEntity<Boolean> validateOTP(@RequestParam String email, @RequestParam String otp) {
+        return ResponseEntity.ok(authService.validateOTP(email, otp));
+    }
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+
+    @Value("${application.default.password}")
+    private String defaultPassword;
 
     @Override
     public boolean changePassword(String username, String oldPassword, String newPassword) {
@@ -52,6 +56,17 @@ public class UserServiceImpl implements UserService {
         }
 
         return true;
+    }
+
+    @Override
+    public void resetPassword(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new NotFoundException(Constants.Message.NOT_FOUND_USER);
+        }
+
+        user.setPassword(passwordEncoder.encode(defaultPassword));
+        userRepository.save(user);
     }
 
     @Override

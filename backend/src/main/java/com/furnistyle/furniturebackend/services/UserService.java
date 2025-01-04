@@ -7,6 +7,8 @@ import java.util.List;
 public interface UserService {
     boolean changePassword(String username, String olePassword, String newPassword);
 
+    void resetPassword(String email);
+
     UserDTO getUserByToken(String token);
 
     UserDTO getUserById(Long id);

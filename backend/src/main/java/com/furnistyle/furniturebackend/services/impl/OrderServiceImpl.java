@@ -19,6 +19,7 @@ import com.furnistyle.furniturebackend.repositories.OrderDetailRepository;
 import com.furnistyle.furniturebackend.repositories.OrderRepository;
 import com.furnistyle.furniturebackend.repositories.ProductRepository;
 import com.furnistyle.furniturebackend.repositories.UserRepository;
+import com.furnistyle.furniturebackend.services.MailService;
 import com.furnistyle.furniturebackend.services.OrderDetailService;
 import com.furnistyle.furniturebackend.services.OrderService;
 import com.furnistyle.furniturebackend.utils.Constants;
@@ -43,11 +44,12 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     private final OrderMapper orderMapper;
     private final OrderDetailMapper orderDetailMapper;
+    private final MailService mailService;
 
     @Override
     public OrderDTO getOrderById(Long id) {
-        return orderMapper.toDTO((orderRepository.findById(id).orElseThrow(() -> new NotFoundException(
-            Constants.Message.NOT_FOUND_ORDER))));
+        return orderMapper.toDTO(
+            (orderRepository.findById(id).orElseThrow(() -> new NotFoundException(Constants.Message.NOT_FOUND_ORDER))));
     }
 
     @Override
@@ -74,8 +76,9 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(EOrderStatus.PENDING);
         order.setAddress(createOrderRequest.getAddress());
         order.setCreatedDate(LocalDateTime.now());
-        double total = createOrderRequest.getOrderDetailDTOs().stream()
-            .mapToDouble(item -> item.getAmount() * item.getPrice()).sum();
+        double total =
+            createOrderRequest.getOrderDetailDTOs().stream().mapToDouble(item -> item.getAmount() * item.getPrice())
+                .sum();
         order.setTotalAmount(total);
         order = orderRepository.save(order);
 
@@ -95,9 +98,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean updateStatus(Long orderId, EOrderStatus status) {
-        Order order = orderRepository.findById(orderId).orElseThrow(() ->
-            new NotFoundException(Constants.Message.NOT_FOUND_ORDER)
-        );
+        Order order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new NotFoundException(Constants.Message.NOT_FOUND_ORDER));
+
+        if (!checkStatusBeforeUpdate(order.getStatus(), status)) {
+            throw new BadRequestException(Constants.Message.INVALID_STATUS);
+        }
 
         order.setStatus(status);
         try {
@@ -105,6 +111,98 @@ public class OrderServiceImpl implements OrderService {
         } catch (Exception e) {
             throw new DataAccessException(Constants.Message.FAILED_WHILE_SAVING_ORDER);
         }
+
+        String stt = "";
+        switch (status) {
+            case PENDING -> stt = " đang được xác nhận";
+            case PROCESSING -> stt = " đang được xử lí";
+            case SHIPPED -> stt = " đang được vận chuyển";
+            case DELIVERED -> stt = " đã giao hàng thành công";
+            case CANCELLED -> stt = " đã bị hủy";
+            default -> stt = "";
+        }
+
+        String body = """
+            <!DOCTYPE html>
+            <html lang="vi">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Trạng thái đơn hàng</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        line-height: 1.6;
+                        margin: 0;
+                        padding: 0;
+                        background-color: #f9f9f9;
+                        color: #333;
+                    }
+                    .email-container {
+                        max-width: 600px;
+                        margin: 20px auto;
+                        background-color: #fff;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        overflow: hidden;
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                    }
+                    .header {
+                        background-color: #4CAF50;
+                        color: #fff;
+                        text-align: center;
+                        padding: 15px;
+                    }
+                    .header h1 {
+                        margin: 0;
+                        font-size: 24px;
+                    }
+                    .content {
+                        padding: 20px;
+                    }
+                    .content p {
+                        margin: 10px 0;
+                    }
+                    .footer {
+                        text-align: center;
+                        padding: 10px;
+                        background-color: #f1f1f1;
+                        font-size: 14px;
+                        color: #777;
+                    }
+                    .footer a {
+                        color: #4CAF50;
+                        text-decoration: none;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="email-container">
+                    <div class="header">
+                        <h1>TRẠNG THÁI ĐƠN HÀNG SỐ""" + " " + orderId + """
+            </h1>
+            </div>
+            <div class="content">
+                <p>Xin chào""" + " " + order.getCreatedCustomer().getFullname() + """
+            ,</p>
+            <p>Đơn hàng của bạn có mã số <strong>""" + orderId + "</strong>" + stt + """
+                         .</p>
+                         <p>Nếu bạn có bất kỳ câu hỏi nào,\s
+                         xin vui lòng liên hệ với chúng tôi qua email hoặc số điện thoại hỗ trợ.</p>
+                         <p>Trân trọng,</p>
+                         <p><strong>Đội ngũ Hỗ trợ</strong></p>
+                     </div>
+                     <div class="footer">
+                         <p>Bạn nhận được email này vì bạn đã đặt hàng tại cửa hàng của chúng tôi.</p>
+                         <p><a href="https://yourwebsite.com">Truy cập website</a> để biết thêm thông tin.</p>
+                     </div>
+                 </div>
+             </body>
+             </html>
+            \s""";
+
+        String subject = "TRẠNG THÁI ĐƠN HÀNG SỐ " + orderId;
+        mailService.sendEmail(order.getCreatedCustomer().getEmail(), subject, body);
 
         return true;
     }
@@ -202,5 +300,17 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return true;
+    }
+
+    boolean checkStatusBeforeUpdate(EOrderStatus curStatus, EOrderStatus newStatus) {
+        if (curStatus == null || newStatus == null) {
+            return false;
+        }
+
+        if (curStatus == EOrderStatus.CANCELLED || curStatus == EOrderStatus.DELIVERED) {
+            return false;
+        }
+
+        return newStatus.ordinal() >= curStatus.ordinal();
     }
 }

@@ -79,5 +79,8 @@ public class Constants {
         public static final String NOT_MATCH_CODE = "Mã OTP không đúng, vui lòng thử lại!";
 
         public static final String EXPIRED_TOKEN = "Phiên đăng nhập đã hết, vui lòng đăng nhập lại!";
+
+        public static final String NOT_BOUGHT = "Người dùng chưa mua sản phẩm này!";
+        public static final String ADD_REVIEW_SUCCESSFUL = "Thêm review thành công!";
     }
 }

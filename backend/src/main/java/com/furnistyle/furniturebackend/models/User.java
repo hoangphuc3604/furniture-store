@@ -3,6 +3,7 @@ package com.furnistyle.furniturebackend.models;
 import com.furnistyle.furniturebackend.enums.EGender;
 import com.furnistyle.furniturebackend.enums.ERole;
 import com.furnistyle.furniturebackend.enums.EUserStatus;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -77,6 +78,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "confirmedAdmin", fetch = FetchType.LAZY)
     private List<Order> confirmOrders;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
 
     @Override
     public String getUsername() {

@@ -1,6 +1,7 @@
 package com.furnistyle.furniturebackend.repositories;
 
 import com.furnistyle.furniturebackend.models.Product;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,4 +26,20 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         @Param("categoryId") Long categoryId,
         @Param("materialId") Long materialId,
         Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE "
+        + "p.id != :currentProductId "
+        + "AND p.status = 'ACTIVE' "
+        + "AND (p.category.id = :categoryId OR p.material.id = :materialId)")
+    List<Product> findRelatedProducts(
+        @Param("currentProductId") Long currentProductId,
+        @Param("categoryId") Long categoryId,
+        @Param("materialId") Long materialId,
+        Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE "
+        + "p.status = 'ACTIVE' "
+        + "AND p.createdAt >= :startDate "
+        + "ORDER BY p.createdAt DESC")
+    List<Product> findNewProducts(@Param("startDate") LocalDateTime startDate, Pageable pageable);
 }

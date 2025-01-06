@@ -2,6 +2,7 @@ package com.furnistyle.furniturebackend.services.impl;
 
 import com.furnistyle.furniturebackend.dtos.bases.MediaDTO;
 import com.furnistyle.furniturebackend.dtos.bases.ProductDTO;
+import com.furnistyle.furniturebackend.dtos.responses.ProductResponse;
 import com.furnistyle.furniturebackend.exceptions.BadRequestException;
 import com.furnistyle.furniturebackend.exceptions.NotFoundException;
 import com.furnistyle.furniturebackend.mappers.MediaMapper;
@@ -55,7 +56,7 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public boolean createProductImages(Long productId, List<MultipartFile> files) throws Exception {
-        ProductDTO existingProduct = productService.getProductById(productId);
+        ProductResponse existingProduct = productService.getProductById(productId);
         files = files == null ? new ArrayList<MultipartFile>() : files;
         if (files.size() > Constants.Message.MAXIMUM_IMAGES_PER_PRODUCT) {
             throw new Exception(Constants.Message.UPLOAD_IMAGES_MAX_20);

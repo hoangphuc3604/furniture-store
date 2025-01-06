@@ -17,8 +17,8 @@ public class Constants {
         public static final String CAN_NOT_UPDATE_INFO_USER = "Không thể cập nhật thông tin người dùng!";
         public static final String UPDATE_USER_SUCCESSFUL = "Cập nhật thông tin người dùng thành công!";
         public static final String UPDATE_USER_FAILED = "Cập nhật thông tin người dùng thất bại!";
-        public static final String BLOCK_USER_WITH_ID = "Kích hoạt thành công tài khoản của người dùng có id: ";
-        public static final String UNLOCK_USER_WITH_ID = "Khoá thành công tài khoản của người dùng có id: ";
+        public static final String BLOCK_USER_WITH_ID = "Khoá thành công tài khoản của người dùng có id: ";
+        public static final String UNLOCK_USER_WITH_ID = "Kích hoạt thành công tài khoản của người dùng có id: ";
         public static final String REGISTER_SUCCESSFUL = "Đăng ký thông tin người dùng thành công!";
         public static final String REGISTER_FAILED = "Đăng ký thông tin người dùng thất bại!";
         public static final String ALREADY_USERNAME_REGISTER = "Tên người dùng đã tồn tại!";

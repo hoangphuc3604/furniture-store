@@ -24,6 +24,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody AuthenticationRequest request) {
+        return ResponseEntity.ok(authService.authenticate(request));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
+        if (authService.register(request)) {
+            return ResponseEntity.ok().body(Constants.Message.REGISTER_SUCCESSFUL);
+        } else {
+            return ResponseEntity.badRequest().body(Constants.Message.REGISTER_FAILED);
+        }
+    }
+
     @GetMapping("/forgotPassword")
     public ResponseEntity<Boolean> forgotPassword(@RequestParam String email) {
         return ResponseEntity.ok(authService.sendOTPForForgotPassword(email));
@@ -39,32 +53,8 @@ public class AuthController {
         return ResponseEntity.ok(authService.validateOTP(email, otp));
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
-        if (authService.register(request)) {
-            return ResponseEntity.ok().body(Constants.Message.REGISTER_SUCCESSFUL);
-        } else {
-            return ResponseEntity.badRequest().body(Constants.Message.REGISTER_FAILED);
-        }
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody AuthenticationRequest request) {
-        return ResponseEntity.ok(authService.authenticate(request));
-    }
-
     @PostMapping("/refresh-token")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         authService.refreshToken(request, response);
-    }
-
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("Deploy successfully!");
-    }
-
-    @GetMapping("/test3")
-    public ResponseEntity<String> test3() {
-        return ResponseEntity.ok("CI/CD thành công rồi mấy đứa ơi :)))");
     }
 }

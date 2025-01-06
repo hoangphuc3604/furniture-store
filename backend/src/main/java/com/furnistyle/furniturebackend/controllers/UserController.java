@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
+    //done
     @GetMapping("/getCurrentUser")
     public ResponseEntity<UserDTO> getByToken(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");

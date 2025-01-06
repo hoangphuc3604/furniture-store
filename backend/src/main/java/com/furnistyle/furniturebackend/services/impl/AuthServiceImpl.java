@@ -55,6 +55,18 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public boolean register(RegisterRequest request) {
+        if (userRepository.findByUsername(request.getUsername()) != null) {
+            throw new BadRequestException(Constants.Message.ALREADY_USERNAME_REGISTER);
+        }
+
+        if (userRepository.findByEmail(request.getEmail()) != null) {
+            throw new BadRequestException(Constants.Message.ALREADY_MAIL_REGISTER);
+        }
+
+        if (userRepository.findByPhone(request.getPhone()) != null) {
+            throw new BadRequestException(Constants.Message.ALREADY_PHONE_REGISTER);
+        }
+
         var user = User.builder()
             .username(request.getUsername())
             .fullname(request.getFullname())

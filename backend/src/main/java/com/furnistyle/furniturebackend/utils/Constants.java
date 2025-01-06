@@ -21,6 +21,9 @@ public class Constants {
         public static final String UNLOCK_USER_WITH_ID = "Khoá thành công tài khoản của người dùng có id: ";
         public static final String REGISTER_SUCCESSFUL = "Đăng ký thông tin người dùng thành công!";
         public static final String REGISTER_FAILED = "Đăng ký thông tin người dùng thất bại!";
+        public static final String ALREADY_USERNAME_REGISTER = "Tên người dùng đã tồn tại!";
+        public static final String ALREADY_PHONE_REGISTER = "Số điện thoại đã được đăng ký!";
+        public static final String ALREADY_MAIL_REGISTER = "Email đã được đăng ký!";
 
         public static final String NOT_FOUND_ORDER = "Không tìm thấy đơn hàng!";
         public static final String NOT_FOUND_PRODUCT = "Không tìm thấy sản phẩm!";
@@ -73,6 +76,8 @@ public class Constants {
         public static final String CLOUD_FOLDER_NAME = "Product Medias";
         public static final String INVALID_STATUS = "Trạng thái cần cập nhật không hợp lệ!";
         public static final String EXPIRED_CODE = "Mã OTP đã hết hạn!";
-        public static final String NOT_MATCH_CODE = "mã OTP không đúng, vui lòng thử lại!";
+        public static final String NOT_MATCH_CODE = "Mã OTP không đúng, vui lòng thử lại!";
+
+        public static final String EXPIRED_TOKEN = "Phiên đăng nhập đã hết, vui lòng đăng nhập lại!";
     }
 }

@@ -3,7 +3,6 @@ package com.furnistyle.furniturebackend.controllers;
 import com.furnistyle.furniturebackend.dtos.bases.ProductDTO;
 import com.furnistyle.furniturebackend.dtos.responses.ProductListResponse;
 import com.furnistyle.furniturebackend.dtos.responses.ProductResponse;
-import com.furnistyle.furniturebackend.models.Product;
 import com.furnistyle.furniturebackend.services.ProductService;
 import com.furnistyle.furniturebackend.utils.Constants;
 import jakarta.validation.Valid;

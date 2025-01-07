@@ -9,7 +9,7 @@ import com.furnistyle.furniturebackend.models.Product;
 import com.furnistyle.furniturebackend.repositories.OrderDetailRepository;
 import com.furnistyle.furniturebackend.repositories.OrderRepository;
 import com.furnistyle.furniturebackend.repositories.ProductRepository;
-import com.furnistyle.furniturebackend.services.SuperAdminService;
+import com.furnistyle.furniturebackend.services.StoreService;
 import com.furnistyle.furniturebackend.utils.Constants;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class SuperAdminServiceImpl implements SuperAdminService {
+public class StoreServiceImpl implements StoreService {
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final ProductRepository productRepository;

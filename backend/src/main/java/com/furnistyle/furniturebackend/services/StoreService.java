@@ -3,7 +3,7 @@ package com.furnistyle.furniturebackend.services;
 import java.time.LocalDate;
 import java.util.Map;
 
-public interface SuperAdminService {
+public interface StoreService {
     double revenueOfCategory(LocalDate startDate, LocalDate endDate, Long categoryId);
 
     double revenueOfProduct(LocalDate startDate, LocalDate endDate, Long productId);

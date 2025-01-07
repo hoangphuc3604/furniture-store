@@ -28,8 +28,8 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
 
-    private static final String[] WHITE_LIST_URL = {"/auth/**", "products/**", "medias/**",
-        "categories/**", "materials/**", "/order/**", "/reviews/**"};
+    private static final String[] WHITE_LIST_URL = {"/auth/**", "/products/**", "/medias/**",
+        "/categories/**", "/materials/**", "/order/**", "/reviews/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

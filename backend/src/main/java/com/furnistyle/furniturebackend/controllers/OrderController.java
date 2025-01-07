@@ -47,6 +47,11 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrdersByUserId(id));
     }
 
+    @GetMapping("/getOrdersByConfirmAdminId")
+    ResponseEntity<List<OrderDTO>> getOrdersByConfirmAdmin(@RequestParam Long id) {
+        return ResponseEntity.ok(orderService.getOrdersByConfirmAdmin(id));
+    }
+
     @GetMapping("/getOrdersByStatus")
     ResponseEntity<List<OrderDTO>> getOrdersByStatus(@RequestParam String status) {
         return ResponseEntity.ok(orderService.getOrdersByStatus(EOrderStatus.valueOf(status)));

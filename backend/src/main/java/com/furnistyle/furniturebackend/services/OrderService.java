@@ -13,6 +13,8 @@ public interface OrderService {
 
     List<OrderDTO> getOrdersByUserId(Long id);
 
+    List<OrderDTO> getOrdersByConfirmAdmin(Long id);
+
     List<OrderDTO> getOrdersByStatus(EOrderStatus status);
 
     boolean createOrder(OrderRequest createOrderRequest);

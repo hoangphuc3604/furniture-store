@@ -2,6 +2,7 @@ package com.furnistyle.furniturebackend.repositories;
 
 import com.furnistyle.furniturebackend.enums.EOrderStatus;
 import com.furnistyle.furniturebackend.models.Order;
+import com.furnistyle.furniturebackend.models.User;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,4 +17,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByStatus(EOrderStatus status);
 
     List<Order> findAllByStatus(EOrderStatus status);
+
+    List<Order> findByConfirmedAdmin(User confirmedAdmin);
 }

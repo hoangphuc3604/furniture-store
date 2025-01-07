@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductListResponse {
-    private List<ProductDTO> products;
+    private List<ProductResponse> products;
     private int totalPages;
 }

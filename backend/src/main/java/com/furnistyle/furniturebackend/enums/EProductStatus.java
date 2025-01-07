@@ -1,6 +1,6 @@
 package com.furnistyle.furniturebackend.enums;
 
 public enum EProductStatus {
-    ACTIVE,
-    INACTIVE
+    IN_STOCK,
+    OUT_OF_STOCK
 }

@@ -38,5 +38,5 @@ public class ProductDTO {
 
     private String description;
 
-    private EProductStatus status = EProductStatus.ACTIVE;
+    private EProductStatus status;
 }

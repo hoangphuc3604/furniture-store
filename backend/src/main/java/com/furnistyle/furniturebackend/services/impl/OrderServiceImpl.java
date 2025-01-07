@@ -253,7 +253,9 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId).orElseThrow(() ->
             new NotFoundException(Constants.Message.NOT_FOUND_ORDER)
         );
-
+        if (order.getStatus() != EOrderStatus.PENDING) {
+            throw new BadRequestException(Constants.Message.CAN_NOT_UPDATE_ORDER);
+        }
         order.setAddress(address);
         try {
             orderRepository.save(order);

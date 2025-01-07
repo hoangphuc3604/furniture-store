@@ -38,6 +38,7 @@ public class ProductServiceImpl implements ProductService {
         if (!materialRepository.existsById(productDTO.getMaterialId())) {
             throw new NotFoundException(Constants.Message.NOT_FOUND_MATERIAL);
         }
+        productDTO.setStatus(EProductStatus.IN_STOCK);
         productRepository.save(productMapper.toEntity(productDTO));
         return productDTO;
     }
@@ -106,7 +107,7 @@ public class ProductServiceImpl implements ProductService {
     public boolean deleteProduct(long id) {
         Product product = productRepository.findById(id)
             .orElseThrow(() -> new NotFoundException(Constants.Message.NOT_FOUND_PRODUCT));
-        product.setStatus(EProductStatus.INACTIVE);
+        product.setStatus(EProductStatus.OUT_OF_STOCK);
         productRepository.save(product);
         return true;
     }

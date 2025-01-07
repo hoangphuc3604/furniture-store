@@ -24,7 +24,8 @@ public class Constants {
         public static final String ALREADY_USERNAME_REGISTER = "Tên người dùng đã tồn tại!";
         public static final String ALREADY_PHONE_REGISTER = "Số điện thoại đã được đăng ký!";
         public static final String ALREADY_MAIL_REGISTER = "Email đã được đăng ký!";
-
+        public static final String CAN_NOT_UPDATE_ORDER = "Không thể cập nhật vì đơn hàng đã được xác nhận!";
+        public static final String OUT_OF_STOCK = "Số lượng sản phẩm còn lại không đủ để đặt hàng!";
         public static final String NOT_FOUND_ORDER = "Không tìm thấy đơn hàng!";
         public static final String NOT_FOUND_PRODUCT = "Không tìm thấy sản phẩm!";
         public static final String FAILED_WHILE_SAVING_ORDER = "Lỗi trong quá trình lưu thông tin đơn hàng!";

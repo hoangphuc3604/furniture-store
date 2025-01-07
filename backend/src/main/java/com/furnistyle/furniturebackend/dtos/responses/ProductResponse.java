@@ -20,7 +20,7 @@ public class ProductResponse {
     private String origin;
     private String size;
     private String description;
-    private EProductStatus status = EProductStatus.ACTIVE;
+    private EProductStatus status;
     @JsonProperty("product_images")
     private List<MediaDTO> productImages;
 }

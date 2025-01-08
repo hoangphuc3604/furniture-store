@@ -36,6 +36,9 @@ public class ProductDTO {
     @Size(min = 1, max = 50, message = "Kích cỡ phải từ 1 đến 50 ký tự!")
     private String size;
 
+    @Min(value = 0, message = "Số lượng phải lớn hơn hoặc bằng 0!")
+    private int quantity;
+
     private String description;
 
     private EProductStatus status;

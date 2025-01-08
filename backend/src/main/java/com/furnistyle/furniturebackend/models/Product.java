@@ -13,6 +13,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -54,11 +56,24 @@ public class Product {
     @Column(nullable = false, length = 50)
     private String size;
 
+    @Column(nullable = false)
+    private int quantity;
+
     @Column(columnDefinition = "TEXT")
     private String description;
 
     @Enumerated(EnumType.STRING)
     private EProductStatus status;
+
+    @PrePersist
+    @PreUpdate
+    public void updateStatus() {
+        if (this.quantity > 0) {
+            this.status = EProductStatus.IN_STOCK;
+        } else {
+            this.status = EProductStatus.OUT_OF_STOCK;
+        }
+    }
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

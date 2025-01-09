@@ -39,8 +39,8 @@ public class ProductServiceImpl implements ProductService {
             throw new NotFoundException(Constants.Message.NOT_FOUND_MATERIAL);
         }
         productDTO.setStatus(EProductStatus.ACTIVE);
-        productRepository.save(productMapper.toEntity(productDTO));
-        return productDTO;
+        Product newProduct = productRepository.save(productMapper.toEntity(productDTO));
+        return productMapper.toDTO(newProduct);
     }
 
     @Override

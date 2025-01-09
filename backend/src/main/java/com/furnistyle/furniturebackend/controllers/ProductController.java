@@ -29,9 +29,8 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("")
-    public ResponseEntity<String> createProduct(@Valid @RequestBody ProductDTO productDTO) {
-        productService.createProduct(productDTO);
-        return ResponseEntity.ok(Constants.Message.ADD_PRODUCT_SUCCESSFUL);
+    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO) {
+        return ResponseEntity.ok(productService.createProduct(productDTO));
     }
 
     @GetMapping("/{id}")

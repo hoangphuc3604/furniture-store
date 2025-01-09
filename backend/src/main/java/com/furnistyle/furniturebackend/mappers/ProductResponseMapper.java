@@ -10,10 +10,12 @@ import org.mapstruct.Mapping;
 public interface ProductResponseMapper extends EntityMapper<Product, ProductResponse> {
     @Override
     @Mapping(source = "productImages", target = "productImages")
+    @Mapping(source = "createdAt", target = "createdAt")
     ProductResponse toDTO(Product product);
 
     @Override
     @Mapping(source = "productImages", target = "productImages")
+    @Mapping(source = "createdAt", target = "createdAt")
     Product toEntity(ProductResponse productResponse);
 }
 

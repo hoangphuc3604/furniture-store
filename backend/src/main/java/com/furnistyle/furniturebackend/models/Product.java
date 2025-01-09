@@ -65,16 +65,6 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private EProductStatus status;
 
-    @PrePersist
-    @PreUpdate
-    public void updateStatus() {
-        if (this.quantity > 0) {
-            this.status = EProductStatus.ACTIVE;
-        } else {
-            this.status = EProductStatus.INACTIVE;
-        }
-    }
-
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -85,6 +75,6 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Media> productImages;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product")
     private List<Review> reviews;
 }

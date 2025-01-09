@@ -60,8 +60,8 @@ const AddProduct = () => {
       });
       dispatch(add_product_image({ formData, product_id: product.id }));
     }
-  }, [product, dispatch]);
-  
+  }, [product, dispatch, images]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProduct({

@@ -9,6 +9,7 @@ import com.furnistyle.furniturebackend.models.Product;
 import com.furnistyle.furniturebackend.repositories.OrderDetailRepository;
 import com.furnistyle.furniturebackend.repositories.OrderRepository;
 import com.furnistyle.furniturebackend.repositories.ProductRepository;
+import com.furnistyle.furniturebackend.repositories.UserRepository;
 import com.furnistyle.furniturebackend.services.StoreService;
 import com.furnistyle.furniturebackend.utils.Constants;
 import java.time.LocalDate;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 public class StoreServiceImpl implements StoreService {
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
+    private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final OrderDetailMapper orderDetailMapper;
     private final OrderMapper orderMapper;
@@ -43,6 +45,28 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public double revenueOfStore(LocalDate startDate, LocalDate endDate) {
         return filterOrdersByDate(startDate, endDate).stream().mapToDouble(OrderDTO::getTotalAmount).sum();
+    }
+
+    @Override
+    public Map<String, Object> revenueTotalOfYear(int year) {
+        long totalUsers = userRepository.count();
+        long totalOrders = orderRepository.count();
+
+        double totalSales = orderRepository.findByStatus(EOrderStatus.DELIVERED).stream()
+            .mapToDouble(order -> orderMapper.toDTO(order).getTotalAmount()).sum();
+
+        long totalProducts = productRepository.count();
+
+        Map<String, Object> chartData = generateChartDataForYear(year);
+
+        Map<String, Object> revenueStats = new HashMap<>();
+        revenueStats.put("totalUsers", totalUsers);
+        revenueStats.put("totalOrders", totalOrders);
+        revenueStats.put("totalSales", totalSales);
+        revenueStats.put("totalProducts", totalProducts);
+        revenueStats.put("chartData", chartData);
+
+        return revenueStats;
     }
 
     @Override
@@ -101,4 +125,26 @@ public class StoreServiceImpl implements StoreService {
             .mapToDouble(detail -> detail.getPrice() * detail.getAmount()).sum();
     }
 
+    private Map<String, Object> generateChartDataForYear(int year) {
+        List<String> labels = List.of("Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+
+        double[] data = new double[12];
+
+        List<OrderDTO> orders = orderMapper.toDTOs(
+                orderRepository.findByStatus(EOrderStatus.DELIVERED)).stream()
+            .filter(order -> order.getCreatedDate().getYear() == year)
+            .toList();
+
+        for (OrderDTO order : orders) {
+            int month = order.getCreatedDate().getMonthValue() - 1;
+            data[month] += order.getTotalAmount();
+        }
+
+        Map<String, Object> chartData = new HashMap<>();
+        chartData.put("labels", labels);
+        chartData.put("data", data);
+
+        return chartData;
+    }
 }

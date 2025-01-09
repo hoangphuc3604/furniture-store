@@ -10,6 +10,8 @@ public interface StoreService {
 
     double revenueOfStore(LocalDate startDate, LocalDate endDate);
 
+    Map<String, Object> revenueTotalOfYear(int year);
+
     Map<Long, Double> revenueStatisticsForAllProducts(LocalDate startDate, LocalDate endDate);
 
     Map<Long, Double> revenueStatisticsForAllCategories(LocalDate startDate, LocalDate endDate);

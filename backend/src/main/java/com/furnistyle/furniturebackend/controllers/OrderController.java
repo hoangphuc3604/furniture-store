@@ -53,7 +53,10 @@ public class OrderController {
     }
 
     @GetMapping("/getOrdersByStatus")
-    ResponseEntity<List<OrderDTO>> getOrdersByStatus(@RequestParam String status) {
+    ResponseEntity<List<OrderDTO>> getOrdersByStatus(@RequestParam(required = false) String status) {
+        if (status == null) {
+            return ResponseEntity.ok(orderService.getAllOrders());
+        }
         return ResponseEntity.ok(orderService.getOrdersByStatus(EOrderStatus.valueOf(status)));
     }
 

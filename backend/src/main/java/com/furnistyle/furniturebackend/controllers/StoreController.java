@@ -47,4 +47,9 @@ public class StoreController {
                                                                         @RequestParam LocalDate endDate) {
         return ResponseEntity.ok(storeService.revenueStatisticsForAllCategories(startDate, endDate));
     }
+
+    @GetMapping("/revenueTotalOfYear")
+    ResponseEntity<Map<String, Object>> revenueTotalOfYear(@RequestParam Integer year) {
+        return ResponseEntity.ok(storeService.revenueTotalOfYear(year));
+    }
 }

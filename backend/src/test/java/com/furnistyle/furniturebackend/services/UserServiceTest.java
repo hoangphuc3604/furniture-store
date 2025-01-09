@@ -1,18 +1,12 @@
 package com.furnistyle.furniturebackend.services;
 
-import static org.instancio.Select.field;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import com.furnistyle.furniturebackend.dtos.bases.UserDTO;
-import com.furnistyle.furniturebackend.dtos.requests.RegisterRequest;
 import com.furnistyle.furniturebackend.dtos.requests.UpdateUserRequest;
 
-import com.furnistyle.furniturebackend.enums.EGender;
 import com.furnistyle.furniturebackend.enums.ERole;
 import com.furnistyle.furniturebackend.enums.EUserStatus;
 import com.furnistyle.furniturebackend.exceptions.BadRequestException;
@@ -370,3 +364,4 @@ public class UserServiceTest {
 
         assertTrue(result.isEmpty());
     }
+}

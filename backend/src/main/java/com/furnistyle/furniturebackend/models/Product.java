@@ -69,9 +69,9 @@ public class Product {
     @PreUpdate
     public void updateStatus() {
         if (this.quantity > 0) {
-            this.status = EProductStatus.IN_STOCK;
+            this.status = EProductStatus.ACTIVE;
         } else {
-            this.status = EProductStatus.OUT_OF_STOCK;
+            this.status = EProductStatus.INACTIVE;
         }
     }
 

@@ -11,7 +11,7 @@ public interface OrderService {
 
     List<OrderDTO> getAllOrders();
 
-    List<OrderDTO> getOrdersByUserId(Long id);
+    List<OrderDTO> getOrdersOfCurrentUser(String token);
 
     List<OrderDTO> getOrdersByConfirmAdmin(Long id);
 

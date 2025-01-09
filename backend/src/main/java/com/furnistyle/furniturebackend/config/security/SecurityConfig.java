@@ -38,9 +38,9 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(request -> {
                 var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
                 corsConfiguration.setAllowedOrigins(List.of("*")); // Nguồn cho phép
-                corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Các method cho phép
-                corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept")); // Header cho phép
-                corsConfiguration.setAllowCredentials(true); // Cho phép cookie/token
+                corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
+                corsConfiguration.setAllowCredentials(true);
                 return corsConfiguration;
             }))
             .authorizeHttpRequests(req -> req

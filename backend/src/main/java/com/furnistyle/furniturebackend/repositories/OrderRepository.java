@@ -18,7 +18,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findByStatus(EOrderStatus status);
 
-    List<Order> findAllByStatus(EOrderStatus status);
 
     List<Order> findByConfirmedAdmin(User confirmedAdmin);
 

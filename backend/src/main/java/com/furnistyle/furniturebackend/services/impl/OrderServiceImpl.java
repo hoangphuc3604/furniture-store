@@ -19,6 +19,7 @@ import com.furnistyle.furniturebackend.repositories.OrderDetailRepository;
 import com.furnistyle.furniturebackend.repositories.OrderRepository;
 import com.furnistyle.furniturebackend.repositories.ProductRepository;
 import com.furnistyle.furniturebackend.repositories.UserRepository;
+import com.furnistyle.furniturebackend.services.JwtService;
 import com.furnistyle.furniturebackend.services.MailService;
 import com.furnistyle.furniturebackend.services.OrderDetailService;
 import com.furnistyle.furniturebackend.services.OrderService;
@@ -45,6 +46,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
     private final OrderDetailMapper orderDetailMapper;
     private final MailService mailService;
+    private final JwtService jwtService;
 
     @Override
     public OrderDTO getOrderById(Long id) {
@@ -58,10 +60,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> getOrdersByUserId(Long id) {
+    public List<OrderDTO> getOrdersOfCurrentUser(String token) {
+        String username = jwtService.extractUsername(token);
         User user =
-            userRepository.findById(id).orElseThrow(() -> new NotFoundException(Constants.Message.NOT_FOUND_USER));
-        return orderMapper.toDTOs(orderRepository.findByCreatedCustomerId(id));
+            userRepository.findByUsername(username);
+        if (user == null) {
+            throw new NotFoundException(Constants.Message.NOT_FOUND_USER);
+        }
+        return orderMapper.toDTOs(orderRepository.findByCreatedCustomerId(user.getId()));
     }
 
     @Override

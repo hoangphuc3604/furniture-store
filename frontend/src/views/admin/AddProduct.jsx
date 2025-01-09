@@ -52,6 +52,16 @@ const AddProduct = () => {
     (state) => state.products
   );
 
+  useEffect(() => {
+    if (product && images.length > 0) {
+      const formData = new FormData();
+      images.forEach((image) => {
+        formData.append("files", image);
+      });
+      dispatch(add_product_image({ formData, product_id: product.id }));
+    }
+  }, [product, dispatch]);
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProduct({
@@ -73,17 +83,6 @@ const AddProduct = () => {
       );
     }
   };
-
-  useEffect(() => {
-    console.log(images);
-    if (product) {
-      const formData = new FormData();
-      images.forEach((image) => {
-        formData.append("files", image);
-      });
-      dispatch(add_product_image({ formData, product_id: product.id }));
-    }
-  }, [product, dispatch, images]);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);

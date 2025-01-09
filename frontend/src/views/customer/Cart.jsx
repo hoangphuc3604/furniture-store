@@ -33,7 +33,7 @@ const Cart = () => {
     if (cart.length > 0) {
       setFilteredCart([...cart, ...filteredCart]);
     }
-  }, [cart, filteredCart]);
+  }, [cart]);
 
   useEffect(() => {
     const tempCart = JSON.parse(localStorage.getItem("cart")) || [];

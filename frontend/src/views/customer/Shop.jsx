@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   clearMessage,
-  get_category,
   get_products,
 } from "../../store/Reducers/productReducer";
 import { toast } from "react-hot-toast";
@@ -16,9 +15,7 @@ import { get_materials } from "../../store/Reducers/materialReducer";
 const { Option } = Select;
 
 const Shop = () => {
-  const { products, errorMessage, loader } = useSelector(
-    (state) => state.products
-  );
+  const { products, errorMessage } = useSelector((state) => state.products);
   const { categories } = useSelector((state) => state.categories);
   const { materials } = useSelector((state) => state.materials);
 
@@ -68,7 +65,7 @@ const Shop = () => {
       toast.error(errorMessage);
     }
     dispatch(clearMessage());
-  }, [errorMessage]);
+  }, [errorMessage, dispatch]);
 
   const handlePriceChange = (value) => {
     setPriceRange(value);
@@ -86,13 +83,13 @@ const Shop = () => {
     updateQueryParams("material", values.join(","));
   };
 
-  const resetFilters = () => {
-    navigate({ search: "" });
-    setSearchValue("");
-    setPriceRange([0, 5000000]);
-    setSelectedCategory([]);
-    setSelectedMaterial([]);
-  };
+  // const resetFilters = () => {
+  //   navigate({ search: "" });
+  //   setSearchValue("");
+  //   setPriceRange([0, 5000000]);
+  //   setSelectedCategory([]);
+  //   setSelectedMaterial([]);
+  // };
 
   const filteredProducts = products
     .filter((product) =>

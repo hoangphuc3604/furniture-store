@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   clearMessage,
   get_orders_by_status,
+  update_order,
 } from "../../store/Reducers/orderReducer";
 import toast from "react-hot-toast";
 import { Pagination, Select } from "antd";
 import Loading from "./../components/Loading";
+import "../../App.css";
 
 const OrderList = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,7 +24,7 @@ const OrderList = () => {
 
   useEffect(() => {
     dispatch(get_orders_by_status(orderStatus));
-  }, [dispatch, orderStatus, currentPage]);
+  }, [dispatch, orderStatus]);
 
   useEffect(() => {
     if (errorMessage) {
@@ -31,6 +33,26 @@ const OrderList = () => {
     dispatch(clearMessage());
   }, [success, errorMessage, dispatch]);
 
+  const handleStatusChange = (orderId, newStatus) => {
+    dispatch(update_order({ order_id: orderId, status: newStatus }));
+  };
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "PENDING":
+        return "status-pending";
+      case "PROCESSING":
+        return "status-processing";
+      case "SHIPPED":
+        return "status-shipped";
+      case "DELIVERED":
+        return "status-delivered";
+      case "CANCELLED":
+        return "status-cancelled";
+      default:
+        return "";
+    }
+  };
   const statusOptions = [
     { value: "PENDING", label: "Pending" },
     { value: "PROCESSING", label: "Processing" },
@@ -106,7 +128,14 @@ const OrderList = () => {
                           {new Date(order.createdDate).toLocaleDateString()}
                         </td>
                         <td className="py-2 px-4 border-b border-gray-200 text-center">
-                          {order.status}
+                          <Select
+                            value={order.status}
+                            onChange={(value) =>
+                              handleStatusChange(order.id, value)
+                            }
+                            options={statusOptions}
+                            className="w-full"
+                          />
                         </td>
                         <td className="py-2 px-4 border-b border-gray-200 text-center">
                           {order.total_amount}
@@ -153,7 +182,14 @@ const OrderList = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="font-semibold">Status:</span>
-                      <span>{order.status}</span>
+                      <Select
+                        value={order.status}
+                        onChange={(value) =>
+                          handleStatusChange(order.id, value)
+                        }
+                        options={statusOptions}
+                        className="w-full"
+                      />
                     </div>
                     <div className="flex justify-between">
                       <span className="font-semibold">Total Amount:</span>

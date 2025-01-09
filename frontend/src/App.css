@@ -42,3 +42,23 @@
   height: 200px; /* Set your desired height */
   object-fit: cover; /* Ensure the image covers the area without distortion */
 }
+
+.status-pending {
+  color: orange;
+}
+
+.status-processing {
+  color: blue;
+}
+
+.status-shipped {
+  color: purple;
+}
+
+.status-delivered {
+  color: green;
+}
+
+.status-cancelled {
+  color: red;
+}

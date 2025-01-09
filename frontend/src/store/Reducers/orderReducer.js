@@ -4,13 +4,10 @@ import api from "../../api/api";
 
 export const get_orders = createAsyncThunk(
   "orders/get_orders",
-  async (pageData, { fulfillWithValue, rejectWithValue }) => {
-    console.log(pageData);
+  async (_, { fulfillWithValue, rejectWithValue }) => {
     try {
-      const { data } = await api.get(
-        // `/orders?page=${pageData.currentPage}&limit=${pageData.perPage}`
-        `/orders`
-      );
+      const { data } = await api.get(`/order/getAllOrders`);
+      console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -76,7 +73,7 @@ export const get_recent_orders = createAsyncThunk(
   "orders/get_recent_orders",
   async (_, { fulfillWithValue, rejectWithValue }) => {
     try {
-      const { data } = await api.get("/order/getAllOrders");
+      const { data } = await api.get("/order/getOrdersByStatus");
       return fulfillWithValue(data.slice(0, 5));
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -84,6 +81,22 @@ export const get_recent_orders = createAsyncThunk(
   }
 );
 
+export const get_order_history = createAsyncThunk(
+  "order/get_order_history",
+  async (_, { fulfillWithValue, rejectWithValue }) => {
+    try {
+      const { data } = await api.get(`/order/getOrdersOfCurrentUser`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 export const get_orders_by_status = createAsyncThunk(
   "order/get_orders_by_status",
   async (status, { fulfillWithValue, rejectWithValue }) => {

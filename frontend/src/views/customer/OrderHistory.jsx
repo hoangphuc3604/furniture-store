@@ -1,169 +1,167 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Table, Tag, Typography, Button, Modal, Select } from "antd";
-import { get_orders_by_status } from "../../store/Reducers/orderReducer";
-
-const { Title, Text } = Typography;
-const { Option } = Select;
+import {
+  get_order_history,
+  clearMessage,
+} from "../../store/Reducers/orderReducer";
+import toast from "react-hot-toast";
+import { Pagination } from "antd";
+import "../../App.css";
 
 const OrderHistory = () => {
-  const { orders } = useSelector((state) => state.orders);
-  const { userInfo } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
+  const perPage = 10;
 
-  const [selectedOrder, setSelectedOrder] = useState(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState("PENDING");
+  const dispatch = useDispatch();
+  const { orderHistory, success, errorMessage } = useSelector(
+    (state) => state.orders
+  );
+
+  const total = orderHistory?.length;
 
   useEffect(() => {
-    if (userInfo) {
-      dispatch(get_orders_by_status(selectedStatus));
+    dispatch(get_order_history());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
     }
-  }, [dispatch, userInfo, selectedStatus]);
+    dispatch(clearMessage());
+  }, [success, errorMessage, dispatch]);
 
-  const handleViewDetails = (order) => {
-    setSelectedOrder(order);
-    setIsModalVisible(true);
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "PENDING":
+        return "status-pending";
+      case "PROCESSING":
+        return "status-processing";
+      case "SHIPPED":
+        return "status-shipped";
+      case "DELIVERED":
+        return "status-delivered";
+      case "CANCELLED":
+        return "status-cancelled";
+      default:
+        return "";
+    }
   };
-
-  const closeModal = () => {
-    setSelectedOrder(null);
-    setIsModalVisible(false);
-  };
-
-  const handleStatusChange = (status) => {
-    setSelectedStatus(status);
-    dispatch(get_orders_by_status(status));
-  };
-
-  const columns = [
-    {
-      title: "Order ID",
-      dataIndex: "id",
-      key: "id",
-      render: (text) => <Text>{text}</Text>,
-    },
-    {
-      title: "Created Date",
-      dataIndex: "createdDate",
-      key: "createdDate",
-      render: (text) => <Text>{new Date(text).toLocaleDateString()}</Text>,
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-      render: (text) => <Text>{text}</Text>,
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status) => {
-        let color = "";
-        switch (status) {
-          case "PENDING":
-            color = "gold";
-            break;
-          case "PROCESSING":
-            color = "orange";
-            break;
-          case "SHIPPED":
-            color = "blue";
-            break;
-          case "DELIVERED":
-            color = "green";
-            break;
-          case "CANCELLED":
-            color = "red";
-            break;
-          default:
-            color = "default";
-        }
-        return <Tag color={color}>{status}</Tag>;
-      },
-    },
-    {
-      title: "Total Amount",
-      dataIndex: "total_amount",
-      key: "total_amount",
-      render: (amount) => <Text>{amount.toLocaleString()} VND</Text>,
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (_, record) => (
-        <Button type="link" onClick={() => handleViewDetails(record)}>
-          View Details
-        </Button>
-      ),
-    },
-  ];
 
   return (
-    <div className="px-4 lg:px-8 py-6 bg-gray-50 rounded-lg shadow-md">
-      <Title level={3} className="text-center mb-6">
-        Order History
-      </Title>
-
-      {/* Dropdown to select order status */}
-      <div className="mb-4 flex justify-end">
-        <Select
-          value={selectedStatus}
-          onChange={handleStatusChange}
-          style={{ width: 200 }}
-        >
-          <Option value="PENDING">PENDING</Option>
-          <Option value="PROCESSING">PROCESSING</Option>
-          <Option value="SHIPPED">SHIPPED</Option>
-          <Option value="DELIVERED">DELIVERED</Option>
-          <Option value="CANCELLED">CANCELLED</Option>
-        </Select>
+    <div className="px-2 lg:px-7 pt-5">
+      <div className="flex lg:hidden justify-between items-center mb-5 p-4 bg-[#6a5fdf] rounded-md">
+        <h1 className="text-[#d0d2d6] font-semibold text-lg">Order History</h1>
       </div>
 
-      <Table
-        columns={columns}
-        dataSource={orders}
-        rowKey="id"
-        pagination={{ pageSize: 5 }}
-      />
+      <div className="flex flex-wrap w-full">
+        <div className="w-full p-4">
+          <div className="bg-white p-5 rounded-md shadow-md">
+            <div className="flex flex-wrap justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Orders</h2>
+            </div>
 
-      {selectedOrder && (
-        <Modal
-          title={`Order Details (ID: ${selectedOrder.id})`}
-          open={isModalVisible}
-          onCancel={closeModal}
-          footer={[
-            <Button key="close" onClick={closeModal}>
-              Close
-            </Button>,
-          ]}
-        >
-          <div className="mb-4">
-            <Text>
-              <b>Order ID:</b> {selectedOrder.id}
-            </Text>
-            <br />
-            <Text>
-              <b>Created Date:</b>{" "}
-              {new Date(selectedOrder.createdDate).toLocaleDateString()}
-            </Text>
-            <br />
-            <Text>
-              <b>Address:</b> {selectedOrder.address}
-            </Text>
-            <br />
-            <Text>
-              <b>Status:</b> {selectedOrder.status}
-            </Text>
-            <br />
-            <Text>
-              <b>Total Amount:</b> {selectedOrder.total_amount.toLocaleString()}{" "}
-              VND
-            </Text>
+            {/* Display table on large screens */}
+            <div className="hidden lg:block">
+              <table className="min-w-full bg-white">
+                <thead>
+                  <tr>
+                    <th className="py-2 px-4 border-b border-gray-200">No</th>
+                    <th className="py-2 px-4 border-b border-gray-200">
+                      Order ID
+                    </th>
+                    <th className="py-2 px-4 border-b border-gray-200">
+                      Address
+                    </th>
+                    <th className="py-2 px-4 border-b border-gray-200">
+                      Created Date
+                    </th>
+                    <th className="py-2 px-4 border-b border-gray-200">
+                      Status
+                    </th>
+                    <th className="py-2 px-4 border-b border-gray-200">
+                      Total Amount
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orderHistory?.map((order, i) => (
+                    <tr key={order.id}>
+                      <td className="py-2 px-4 border-b border-gray-200 text-center">
+                        {i + 1}
+                      </td>
+                      <td className="py-2 px-4 border-b border-gray-200 text-center">
+                        {order.id}
+                      </td>
+                      <td className="py-2 px-4 border-b border-gray-200 text-center">
+                        {order.address}
+                      </td>
+                      <td className="py-2 px-4 border-b border-gray-200 text-center">
+                        {new Date(order.createdDate).toLocaleDateString()}
+                      </td>
+                      <td
+                        className={`py-2 px-4 border-b border-gray-200 text-center ${getStatusClass(
+                          order.status
+                        )}`}
+                      >
+                        {order.status}
+                      </td>
+                      <td className="py-2 px-4 border-b border-gray-200 text-center">
+                        {order.total_amount}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Display cards on small screens */}
+            <div className="block lg:hidden">
+              {orderHistory?.map((order, i) => (
+                <div
+                  key={order.id}
+                  className="mb-4 p-4 border rounded-md shadow-sm hover:bg-gray-100 cursor-pointer"
+                >
+                  <div className="flex justify-between">
+                    <span className="font-semibold">No:</span>
+                    <span>{i + 1}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-semibold">Order ID:</span>
+                    <span>{order.id}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-semibold">Address:</span>
+                    <span>{order.address}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-semibold">Created Date:</span>
+                    <span>
+                      {new Date(order.createdDate).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-semibold">Status:</span>
+                    <span>{order.status}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-semibold">Total Amount:</span>
+                    <span>{order.total_amount}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="w-full flex justify-end mt-4 bottom-4 right-4">
+              <Pagination
+                current={currentPage}
+                total={total}
+                pageSize={perPage}
+                onChange={(page) => setCurrentPage(page)}
+              />
+            </div>
           </div>
-        </Modal>
-      )}
+        </div>
+      </div>
     </div>
   );
 };

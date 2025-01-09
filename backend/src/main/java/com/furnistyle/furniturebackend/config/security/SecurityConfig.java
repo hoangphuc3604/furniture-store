@@ -3,6 +3,7 @@ package com.furnistyle.furniturebackend.config.security;
 
 import com.furnistyle.furniturebackend.enums.ERole;
 import com.furnistyle.furniturebackend.filters.JwtAuthenticationFilter;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +35,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+            .cors(cors -> cors.configurationSource(request -> {
+                var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
+                corsConfiguration.setAllowedOrigins(List.of("*")); // Nguồn cho phép
+                corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Các method cho phép
+                corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept")); // Header cho phép
+                corsConfiguration.setAllowCredentials(true); // Cho phép cookie/token
+                return corsConfiguration;
+            }))
             .authorizeHttpRequests(req -> req
                 .requestMatchers(WHITE_LIST_URL).permitAll()
                 .requestMatchers("/user/*")

@@ -18,7 +18,6 @@ import com.furnistyle.furniturebackend.repositories.UserRepository;
 import com.furnistyle.furniturebackend.services.impl.UserServiceImpl;
 import com.furnistyle.furniturebackend.utils.Constants;
 import jakarta.validation.ValidationException;
-import java.time.LocalDate;
 
 import java.util.List;
 import java.util.Optional;

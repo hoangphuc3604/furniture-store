@@ -17,6 +17,4 @@ public interface AuthService {
     boolean sendOTPForVerification(String email);
 
     boolean validateOTP(String email, String code);
-
-    void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }

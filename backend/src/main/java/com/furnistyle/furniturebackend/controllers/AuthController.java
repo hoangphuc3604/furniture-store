@@ -52,9 +52,4 @@ public class AuthController {
     public ResponseEntity<Boolean> validateOTP(@RequestParam String email, @RequestParam String otp) {
         return ResponseEntity.ok(authService.validateOTP(email, otp));
     }
-
-    @PostMapping("/refresh-token")
-    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        authService.refreshToken(request, response);
-    }
 }

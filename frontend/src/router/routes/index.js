@@ -1,5 +1,5 @@
 import { privateRoute } from "./privateRoutes";
-import MainLayout from "../../layout/MainLayout";
+import MainLayout from "../../Layout/MainLayout";
 import ProtectRoute from "./ProtectRoute";
 
 export const getRoute = () => {

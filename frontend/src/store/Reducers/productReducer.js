@@ -60,7 +60,6 @@ export const get_product = createAsyncThunk(
   async (id, { fulfillWithValue, rejectWithValue }) => {
     try {
       const { data } = await api.get(`/products/${id}`);
-      console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -89,7 +88,6 @@ export const add_product = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -134,7 +132,6 @@ export const add_product_image = createAsyncThunk(
   "medias/add_product_image",
   async (info, { fulfillWithValue, rejectWithValue }) => {
     try {
-      console.log(info);
       const { data } = await api.post(
         `/medias?productId=${info.product_id}`,
         info.formData,

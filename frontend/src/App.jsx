@@ -11,8 +11,6 @@ function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log("App.js");
-
   useEffect(() => {
     const route = getRoute();
     setAllRoutes([...allRoutes, route]);

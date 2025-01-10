@@ -10,7 +10,6 @@ export const get_users = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
       console.log(error.response);
@@ -56,7 +55,6 @@ export const update_user = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);

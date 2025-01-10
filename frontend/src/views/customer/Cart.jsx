@@ -39,7 +39,7 @@ const Cart = () => {
 
   useEffect(() => {
     if (cart.length > 0) {
-      setFilteredCart([...cart, ...filteredCart]);
+      setFilteredCart([...cart]);
     }
   }, [cart]);
 

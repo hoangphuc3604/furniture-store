@@ -162,7 +162,7 @@ const AdminDashboard = () => {
 
             <tbody>
               {recentOrders.map((order, i) => (
-                <tr>
+                <tr key={i}>
                   <td className="py-3 px-4 font-medium whitespace-nowrap">
                     {order.id}
                   </td>

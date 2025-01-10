@@ -47,7 +47,7 @@ const UserDetail = () => {
   const handleConfirmChange = () => {
     if (newStatus === "ACTIVE") {
       dispatch(active_user(id));
-    } else if (newStatus === "DEACTIVE") {
+    } else if (newStatus === "INACTIVE") {
       dispatch(lock_user(id));
     }
     setStatus(newStatus);

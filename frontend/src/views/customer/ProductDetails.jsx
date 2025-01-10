@@ -32,7 +32,7 @@ const ProductDetails = () => {
       quantity,
       name: product.name,
       price: product.price,
-      image: product.product_images[0].image_link,
+      image: product.product_images[0]?.image_link,
     };
 
     if (!userInfo.role) {
@@ -67,7 +67,7 @@ const ProductDetails = () => {
             {product.product_images?.map((image, index) => (
               <div key={index}>
                 <img
-                  src={image.image_link}
+                  src={image?.image_link}
                   alt={`product-${index}`}
                   className="w-full h-96 object-cover rounded-md"
                 />

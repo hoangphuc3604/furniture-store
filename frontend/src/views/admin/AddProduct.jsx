@@ -60,7 +60,7 @@ const AddProduct = () => {
       });
       dispatch(add_product_image({ formData, product_id: product.id }));
     }
-  }, [product, dispatch, images]);
+  }, [product, dispatch]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -237,7 +237,7 @@ const AddProduct = () => {
                         placeholder="Search Category"
                         onFocus={() => setIsCategoryFocused(true)}
                         onBlur={() =>
-                          setTimeout(() => setIsCategoryFocused(false), 100)
+                          setTimeout(() => setIsCategoryFocused(false), 500)
                         }
                       />
                     </div>
@@ -251,7 +251,8 @@ const AddProduct = () => {
                                 ...m_product,
                                 category_id: category.id,
                               });
-                              setCategoryName(category.category_name);
+                              console.log(category.category_name);
+                              setCategoryName(() => category.category_name);
                             }}
                             className="px-4 py-2 cursor-pointer hover:bg-gray-100"
                           >
@@ -293,7 +294,7 @@ const AddProduct = () => {
                         placeholder="Search Material"
                         onFocus={() => setIsMaterialFocused(true)}
                         onBlur={() =>
-                          setTimeout(() => setIsMaterialFocused(false), 100)
+                          setTimeout(() => setIsMaterialFocused(false), 500)
                         }
                       />
                     </div>
@@ -307,7 +308,8 @@ const AddProduct = () => {
                                 ...m_product,
                                 material_id: material.id,
                               });
-                              setMaterialName(material.material_name);
+                              console.log(material.material_name);
+                              setMaterialName(() => material.material_name);
                             }}
                             className="px-4 py-2 cursor-pointer hover:bg-gray-100"
                           >

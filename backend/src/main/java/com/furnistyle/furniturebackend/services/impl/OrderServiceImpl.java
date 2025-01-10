@@ -244,6 +244,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         order.setConfirmedAdmin(admin);
+        updateStatus(orderId, EOrderStatus.PROCESSING);
         try {
             orderRepository.save(order);
         } catch (Exception e) {

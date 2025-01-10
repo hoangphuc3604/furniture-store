@@ -30,12 +30,8 @@ const Cart = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const tempCart = JSON.parse(localStorage.getItem("cart")) || [];
-    setFilteredCart(tempCart);
-    if (userInfo.role) {
-      dispatch(get_cart());
-    }
-  }, [dispatch, userInfo.role]);
+    dispatch(get_cart());
+  }, [dispatch]);
 
   useEffect(() => {
     if (cart.length > 0) {
@@ -98,7 +94,6 @@ const Cart = () => {
     }
 
     const selectedItems = filteredCart.filter((item) => item.selected);
-    console.log(selectedItems);
     const orderData = {
       created_customer_id: userInfo.id,
       address: shippingInfo.address,
@@ -117,6 +112,9 @@ const Cart = () => {
     setFilteredCart([...remainingItems]);
     setIsModalVisible(false);
     toast.success("Order placed successfully!");
+    setTimeout(() => {
+      dispatch(get_cart());
+    }, 2000);
   };
 
   const displayedCart = filteredCart.filter((item) =>

@@ -30,11 +30,17 @@ const OrderList = () => {
     if (errorMessage) {
       toast.error(errorMessage);
     }
+    if (success) {
+      toast.success("Order status updated successfully!");
+    }
     dispatch(clearMessage());
   }, [success, errorMessage, dispatch]);
 
   const handleStatusChange = (orderId, newStatus) => {
     dispatch(update_order({ order_id: orderId, status: newStatus }));
+    setTimeout(() => {
+      dispatch(get_orders_by_status(orderStatus));
+    }, 500);
   };
 
   const getStatusClass = (status) => {

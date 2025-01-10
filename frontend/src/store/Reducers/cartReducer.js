@@ -22,7 +22,7 @@ export const get_cart = createAsyncThunk(
               ...item,
               name: rs.data.name,
               price: rs.data.price,
-              image: rs.data.product_images[0].image_link,
+              image: rs.data.product_images[0]?.image_link,
             };
           })
         );

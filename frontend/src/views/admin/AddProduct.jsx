@@ -100,7 +100,6 @@ const AddProduct = () => {
 
   useEffect(() => {
     if (success) {
-      toast.success("Product added successfully");
       dispatch(clearMessage());
       navigate("/admin/product-list");
     }
@@ -237,7 +236,7 @@ const AddProduct = () => {
                         placeholder="Search Category"
                         onFocus={() => setIsCategoryFocused(true)}
                         onBlur={() =>
-                          setTimeout(() => setIsCategoryFocused(false), 500)
+                          setTimeout(() => setIsCategoryFocused(false), 300)
                         }
                       />
                     </div>
@@ -294,7 +293,7 @@ const AddProduct = () => {
                         placeholder="Search Material"
                         onFocus={() => setIsMaterialFocused(true)}
                         onBlur={() =>
-                          setTimeout(() => setIsMaterialFocused(false), 500)
+                          setTimeout(() => setIsMaterialFocused(false), 300)
                         }
                       />
                     </div>

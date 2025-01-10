@@ -11,7 +11,7 @@ const LazyProductCard = ({ product }) => {
       cover={
         <img
           alt={product.name}
-          src={product.product_images[0].image_link}
+          src={product.product_images[0]?.image_link}
           style={{ height: 200, objectFit: "cover" }}
         />
       }

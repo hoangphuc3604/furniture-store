@@ -1,0 +1,18 @@
+###Thiết lập môi trường
+- Thư viện sử dụng thiết kế Component: ReactJS
+- UI/UX hiện đại với TailwindCSS 
+- Quá trình xây dựng và khởi chạy đơn giản với npm
+
+###Điều kiện tiên quyết
+- Node.js
+- npm
+đã được cài đặt trên máy
+
+###Cài đặt
+- git clone https://github.com/QuyDang1108/FurnitureStore.git
+- cd FurnitureStore/frontend
+- npm install
+
+###Khởi chạy
+- npm run start
+

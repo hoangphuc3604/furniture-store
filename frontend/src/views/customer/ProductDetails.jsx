@@ -26,6 +26,8 @@ const ProductDetails = () => {
     dispatch(get_related_products(id));
   }, [dispatch, id]);
 
+  console.log(product);
+
   const handleAddToCart = () => {
     const cartItem = {
       id: product.id,

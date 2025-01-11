@@ -37,8 +37,8 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
             .cors(cors -> cors.configurationSource(request -> {
                 var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
-                corsConfiguration.setAllowedOrigins(List.of("*")); // Nguồn cho phép
-                corsConfiguration.setAllowedMethods(List.of("*"));
+                corsConfiguration.addAllowedOriginPattern("*");
+                corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
                 corsConfiguration.setAllowCredentials(true);
                 return corsConfiguration;

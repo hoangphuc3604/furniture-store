@@ -77,7 +77,7 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/updateConfirmAdmin")
+    @PostMapping("/admin/updateConfirmAdmin")
     ResponseEntity<String> updateConfirmAdmin(@RequestBody Map<String, Object> request) {
         if (orderService.updateConfirmAdmin(((Integer) request.get("order_id")).longValue(),
             ((Integer) request.get("admin_id")).longValue())) {

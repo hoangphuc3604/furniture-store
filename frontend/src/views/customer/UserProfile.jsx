@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { update_user } from "./../../store/Reducers/userReducer";
 import toast from "react-hot-toast";
+import Loading from "./../components/Loading";
 
 const UserProfile = () => {
-  const { userInfo } = useSelector((state) => state.auth);
+  const { userInfo, loader } = useSelector((state) => state.auth);
   const { success, errorMessage } = useSelector((state) => state.users);
   const dispatch = useDispatch();
 
@@ -57,6 +58,10 @@ const UserProfile = () => {
       toast.error(errorMessage);
     }
   }, [success, errorMessage]);
+
+  if (loader) {
+    return <Loading />;
+  }
 
   return (
     <div className="px-2 lg:px-7 p-5">

@@ -11,11 +11,14 @@ import {
 import { toast } from "react-hot-toast";
 import { get_categories } from "./../../store/Reducers/categoryReducer";
 import { get_materials } from "../../store/Reducers/materialReducer";
+import Loading from "./../components/Loading";
 
 const { Option } = Select;
 
 const Shop = () => {
-  const { products, errorMessage } = useSelector((state) => state.products);
+  const { products, errorMessage, loader } = useSelector(
+    (state) => state.products
+  );
   const { categories } = useSelector((state) => state.categories);
   const { materials } = useSelector((state) => state.materials);
 
@@ -114,6 +117,8 @@ const Shop = () => {
       if (sortAttribute === "price") return a.price - b.price;
       return 0;
     });
+
+  // if (loader) return <Loading />;
 
   return (
     <div className="px-2 lg:px-7 p-5 bg-slate-100">

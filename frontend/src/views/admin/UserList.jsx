@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearMessage, get_users } from "../../store/Reducers/userReducer";
 import toast from "react-hot-toast";
 import { Pagination } from "antd";
+import Loading from "../components/Loading";
 
 const UserList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 10;
 
   const dispatch = useDispatch();
-  const { users, success, errorMessage, total } = useSelector(
+  const { users, success, errorMessage, total, loader } = useSelector(
     (state) => state.users
   );
 
@@ -23,6 +24,10 @@ const UserList = () => {
     }
     dispatch(clearMessage());
   }, [success, errorMessage]);
+
+  if (loader) {
+    return <Loading />;
+  }
 
   return (
     <div className="px-2 lg:px-7 pt-5">

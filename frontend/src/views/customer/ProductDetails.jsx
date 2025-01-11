@@ -11,12 +11,15 @@ import {
 } from "../../store/Reducers/productReducer";
 import { add_to_cart } from "../../store/Reducers/cartReducer";
 import ProductCard from "../util/ProductCard";
+import Loading from "./../components/Loading";
 
 const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const { id } = useParams();
 
-  const { product, relatedProducts } = useSelector((state) => state.products);
+  const { product, relatedProducts, loader } = useSelector(
+    (state) => state.products
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
@@ -52,6 +55,10 @@ const ProductDetails = () => {
       toast.success("Added to cart successfully.");
     }
   };
+
+  if (loader) {
+    return <Loading />;
+  }
 
   return (
     <div className="px-4 lg:px-10 py-8">

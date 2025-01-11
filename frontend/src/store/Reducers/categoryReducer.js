@@ -6,7 +6,11 @@ export const get_categories = createAsyncThunk(
   "category/get_categories",
   async (pageData, { fulfillWithValue, rejectWithValue }) => {
     try {
-      const { data } = await api.get(`/categories`);
+      const { data } = await api.get(`/categories`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
       console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
@@ -19,7 +23,11 @@ export const get_category = createAsyncThunk(
   "category/get_category",
   async (id, { fulfillWithValue, rejectWithValue }) => {
     try {
-      const { data } = await api.get(`/category${id}`);
+      const { data } = await api.get(`/category${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -32,7 +40,9 @@ export const add_category = createAsyncThunk(
   async (info, { fulfillWithValue, rejectWithValue }) => {
     try {
       const { data } = await api.post("/category", info, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       });
       return fulfillWithValue(data);
     } catch (error) {
@@ -46,7 +56,9 @@ export const delete_category = createAsyncThunk(
   async (id, { fulfillWithValue, rejectWithValue }) => {
     try {
       const { data } = await api.delete(`/category/${id}`, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       });
       return fulfillWithValue(data);
     } catch (error) {
@@ -60,7 +72,9 @@ export const update_category = createAsyncThunk(
   async (info, { fulfillWithValue, rejectWithValue }) => {
     try {
       const { data } = await api.put("/category", info, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       });
       return fulfillWithValue(data);
     } catch (error) {

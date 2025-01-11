@@ -11,6 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { add_order } from "./../../store/Reducers/orderReducer";
 import { toast } from "react-hot-toast";
+import Loading from "./../components/Loading";
 
 const { Text } = Typography;
 
@@ -25,7 +26,7 @@ const Cart = () => {
   });
 
   const { userInfo } = useSelector((state) => state.auth);
-  const { cart } = useSelector((state) => state.cart);
+  const { cart, loader } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -199,6 +200,10 @@ const Cart = () => {
       ),
     },
   ];
+
+  if (loader) {
+    return <Loading />;
+  }
 
   return (
     <div className="px-2 lg:px-7 p-5 my-5 rounded shadow-md">

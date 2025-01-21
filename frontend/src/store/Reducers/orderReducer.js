@@ -6,8 +6,11 @@ export const get_orders = createAsyncThunk(
   "orders/get_orders",
   async (_, { fulfillWithValue, rejectWithValue }) => {
     try {
-      const { data } = await api.get(`/order/getAllOrders`);
-      console.log(data);
+      const { data } = await api.get(`/order/getAllOrders`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -19,7 +22,11 @@ export const get_order = createAsyncThunk(
   "orders/get_order",
   async (id, { fulfillWithValue, rejectWithValue }) => {
     try {
-      const { data } = await api.get(`/order${id}`);
+      const { data } = await api.get(`/order${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -32,7 +39,9 @@ export const add_order = createAsyncThunk(
   async (info, { fulfillWithValue, rejectWithValue }) => {
     try {
       const { data } = await api.post("/order/createOrder", info, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       });
       return fulfillWithValue(data);
     } catch (error) {
@@ -46,7 +55,9 @@ export const update_order = createAsyncThunk(
   async (info, { fulfillWithValue, rejectWithValue }) => {
     try {
       const { data } = await api.post(`/order/updateStatus`, info, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       });
       return fulfillWithValue(data);
     } catch (error) {
@@ -60,7 +71,9 @@ export const delete_order = createAsyncThunk(
   async (id, { fulfillWithValue, rejectWithValue }) => {
     try {
       const { data } = await api.delete(`/orders/${id}`, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       });
       return fulfillWithValue(data);
     } catch (error) {
@@ -73,9 +86,14 @@ export const get_recent_orders = createAsyncThunk(
   "orders/get_recent_orders",
   async (_, { fulfillWithValue, rejectWithValue }) => {
     try {
-      const { data } = await api.get("/order/getOrdersByStatus");
-      return fulfillWithValue(data.slice(0, 5));
+      const { data } = await api.get("/order/getOrdersByStatus", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      return fulfillWithValue(data.slice(data.length - 5));
     } catch (error) {
+      console.log(error.response.data);
       return rejectWithValue(error.response.data);
     }
   }
@@ -102,8 +120,31 @@ export const get_orders_by_status = createAsyncThunk(
   async (status, { fulfillWithValue, rejectWithValue }) => {
     try {
       const { data } = await api.get(
-        `/order/getOrdersByStatus?status=${status}`
+        `/order/getOrdersByStatus?status=${status}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
       );
+      console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const confirm_order = createAsyncThunk(
+  "order/confirm_order",
+  async (info, { fulfillWithValue, rejectWithValue }) => {
+    try {
+      console.log("info", info);
+      const { data } = await api.post(`/order/admin/updateConfirmAdmin`, info, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
       return fulfillWithValue(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -220,6 +261,18 @@ const orderSlice = createSlice({
         state.loader = false;
       })
       .addCase(get_order_history.rejected, (state, { payload }) => {
+        state.errorMessage = payload;
+        state.loader = false;
+      })
+      .addCase(confirm_order.pending, (state) => {
+        state.loader = true;
+      })
+      .addCase(confirm_order.fulfilled, (state, { payload }) => {
+        state.success = true;
+        state.successMessage = payload.message;
+        state.loader = false;
+      })
+      .addCase(confirm_order.rejected, (state, { payload }) => {
         state.errorMessage = payload;
         state.loader = false;
       });

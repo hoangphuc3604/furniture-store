@@ -9,6 +9,7 @@ import {
   get_revennue_stats,
 } from "../../store/Reducers/statReducer";
 import { get_recent_orders } from "../../store/Reducers/orderReducer";
+import Loading from "./../components/Loading";
 
 const AdminDashboard = () => {
   const [unit, setUnit] = useState("VND");
@@ -19,9 +20,8 @@ const AdminDashboard = () => {
 
   const dispatch = useDispatch();
 
-  const { totalSales, totalProducts, totalUsers, errorMessage } = useSelector(
-    (state) => state.stat
-  );
+  const { loader, totalSales, totalProducts, totalUsers, errorMessage } =
+    useSelector((state) => state.stat);
 
   useEffect(() => {
     dispatch(get_recent_orders());
@@ -52,6 +52,10 @@ const AdminDashboard = () => {
     }
     dispatch(clearMessage());
   }, [errorMessage, dispatch]);
+
+  if (loader) {
+    return <Loading />;
+  }
 
   return (
     // Main dashboard

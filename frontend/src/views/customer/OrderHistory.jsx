@@ -7,13 +7,14 @@ import {
 import toast from "react-hot-toast";
 import { Pagination } from "antd";
 import "../../App.css";
+import Loading from "./../components/Loading";
 
 const OrderHistory = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 10;
 
   const dispatch = useDispatch();
-  const { orderHistory, success, errorMessage } = useSelector(
+  const { orderHistory, success, errorMessage, loader } = useSelector(
     (state) => state.orders
   );
 
@@ -46,6 +47,10 @@ const OrderHistory = () => {
         return "";
     }
   };
+
+  if (loader) {
+    return <Loading />;
+  }
 
   return (
     <div className="px-2 lg:px-7 pt-5">

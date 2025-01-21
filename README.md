@@ -11,21 +11,21 @@ Cửa hàng nội thất là một cửa hàng trực tuyến chuyên kinh doanh
 
 ## Hướng dẫn triển khai
 ### Frontend
-### Thiết lập môi trường
+#### Thiết lập môi trường
 - Thư viện sử dụng thiết kế Component: ReactJS
 - UI/UX hiện đại với TailwindCSS 
 - Quá trình xây dựng và khởi chạy đơn giản với npm
-### Điều kiện tiên quyết
+#### Điều kiện tiên quyết
 - Node.js
 - npm đã được cài đặt trên máy
-### Chuẩn bị mã nguồn
+#### Chuẩn bị mã nguồn
 - git clone https://github.com/QuyDang1108/FurnitureStore.git
 - Truy cập vào thư mục frontend
 - Chạy lệnh:
    ```bash
        npm install
    ````
-### Khởi chạy
+#### Khởi chạy
 - Chạy lệnh:
    ```bash
      npm run start

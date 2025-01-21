@@ -7,11 +7,10 @@ import "../../carousel.css";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useDispatch, useSelector } from "react-redux";
 import { get_categories } from "../../store/Reducers/categoryReducer";
+import Loading from "./../components/Loading";
 
 const Homepage = () => {
-  const { categories } = useSelector((state) => state.categories);
-
-  console.log(categories);
+  const { categories, loader } = useSelector((state) => state.categories);
 
   const dispatch = useDispatch();
 
@@ -36,8 +35,6 @@ const Homepage = () => {
       src: image ? image.src : "/images/category/Chair.jpg",
     };
   });
-
-  console.log(mergedCategories);
 
   const responsiveOne = {
     all: {
@@ -64,6 +61,10 @@ const Homepage = () => {
       slidesToSlide: 1, // optional, default to 1.
     },
   };
+
+  if (loader) {
+    return <Loading />;
+  }
 
   return (
     <div className="px-2 lg:px-7 pt-5">

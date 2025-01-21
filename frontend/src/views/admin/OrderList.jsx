@@ -4,6 +4,7 @@ import {
   clearMessage,
   get_orders_by_status,
   update_order,
+  confirm_order,
 } from "../../store/Reducers/orderReducer";
 import toast from "react-hot-toast";
 import { Pagination, Select } from "antd";
@@ -19,6 +20,7 @@ const OrderList = () => {
   const { orders, success, errorMessage, loader } = useSelector(
     (state) => state.orders
   );
+  const { userInfo } = useSelector((state) => state.auth);
 
   const total = orders?.length;
 
@@ -43,22 +45,13 @@ const OrderList = () => {
     }, 500);
   };
 
-  const getStatusClass = (status) => {
-    switch (status) {
-      case "PENDING":
-        return "status-pending";
-      case "PROCESSING":
-        return "status-processing";
-      case "SHIPPED":
-        return "status-shipped";
-      case "DELIVERED":
-        return "status-delivered";
-      case "CANCELLED":
-        return "status-cancelled";
-      default:
-        return "";
-    }
+  const handleConfirmOrder = (orderId, adminId) => {
+    dispatch(confirm_order({ order_id: orderId, admin_id: adminId }));
+    setTimeout(() => {
+      dispatch(get_orders_by_status(orderStatus));
+    }, 2000);
   };
+
   const statusOptions = [
     { value: "PENDING", label: "Pending" },
     { value: "PROCESSING", label: "Processing" },
@@ -116,6 +109,9 @@ const OrderList = () => {
                       <th className="py-2 px-4 border-b border-gray-200">
                         Created Customer
                       </th>
+                      <th className="py-2 px-4 border-b border-gray-200">
+                        Action
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -151,6 +147,16 @@ const OrderList = () => {
                         </td>
                         <td className="py-2 px-4 border-b border-gray-200 text-center">
                           {order.created_customer_id}
+                        </td>
+                        <td className="py-2 px-4 border-b border-gray-200 text-center">
+                          <button
+                            onClick={() =>
+                              handleConfirmOrder(order.id, userInfo.id)
+                            }
+                            className="bg-[#6a5fdf] text-white px-3 py-1 rounded-md"
+                          >
+                            Confirm
+                          </button>
                         </td>
                       </tr>
                     ))}

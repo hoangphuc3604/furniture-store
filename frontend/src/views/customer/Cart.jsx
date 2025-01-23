@@ -60,6 +60,9 @@ const Cart = () => {
     const updatedCart = filteredCart.filter((item) => item.product_id !== id);
     dispatch(delete_from_cart(id));
     setFilteredCart(updatedCart);
+    setTimeout(() => {
+      dispatch(get_cart());
+    }, 1000);
   };
 
   const handleSelectItem = (id) => {

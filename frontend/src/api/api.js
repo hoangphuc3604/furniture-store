@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://furniturestore-zoqo.onrender.com",
+  baseURL: "http://localhost:8888",
 });
 
 export default api;
